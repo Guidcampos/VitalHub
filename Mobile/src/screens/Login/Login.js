@@ -5,11 +5,25 @@ import { Input } from "../../components/Input/Input"
 import { LinkAccount, LinkMedium } from "../../components/Links/Links"
 import { Button, ButtonGoogle } from "../../components/Button/ButtonStyle"
 import { AntDesign } from '@expo/vector-icons';
+import { useState } from "react"
+import api from "../../services/services"
 
 export const Login = ({navigation}) => {
-   
+   const[email, setEmail]= useState('medico@gmail.com')
+   const[senha, setSenha] = useState('medico123')
+
     async function Login(){
-        navigation.navigate("Main")
+
+        await api.post('/Login', {
+            email: email,
+            senha: senha
+        }).then(response => {
+            console.log(response)
+        }).catch(error => {
+            console.log(error)
+        })
+        console.log('456')
+        // navigation.navigate("Main")
     }
    
     return (
@@ -25,6 +39,10 @@ export const Login = ({navigation}) => {
                 placeholder={'Usuário ou E-mail'}
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
+
+                value={email}
+                onChangeText={(txt) => setEmail(txt)}
+
             // value={fieldValue}
             // onChangeText={onChangeText}
             />
@@ -34,6 +52,9 @@ export const Login = ({navigation}) => {
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
+
+                value={senha}
+                onChangeText={(txt)=> setSenha(txt)}
             // value={fieldValue}
             // onChangeText={onChangeText}
             />
