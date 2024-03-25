@@ -9,9 +9,7 @@ import { useState } from "react"
 import api from "../../services/services"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export const Login = ({navigation}) => {
-   const[email, setEmail]= useState('medico@gmail.com')
-   const[senha, setSenha] = useState('medico123')
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
     async function Login(){
         console.log('123')
@@ -31,7 +29,7 @@ export const Login = ({navigation}) => {
         console.log('456')
         // navigation.navigate("Main")
     }
-   
+
     return (
         <Container>
 
@@ -58,13 +56,13 @@ export const Login = ({navigation}) => {
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
                 value={senha}
-                onChangeText={(txt)=> setSenha(txt)}
+                onChangeText={(txt) => setSenha(txt)}
             // value={fieldValue}
             // onChangeText={onChangeText}
             />
 
 
-                <LinkMedium onPress={() => navigation.replace("ForgotPassword")}>Esqueceu sua senha?</LinkMedium>
+            <LinkMedium onPress={() => navigation.replace("ForgotPassword")}>Esqueceu sua senha?</LinkMedium>
 
             <Button onPress={(e) => Login()}>
                 <ButtonTitle>Entrar</ButtonTitle>

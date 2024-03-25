@@ -5,7 +5,7 @@ import { LinkCode } from "../../components/Links/Links"
 import { Logo } from "../../components/Logo/LogoStyle"
 import { ButtonTitle, Subtitle, Title } from "../../components/Title/TitleStyle"
 
-export const CreateAccount = ({navigation}) => {
+export const CreateAccount = ({ navigation }) => {
     return (
         <Container>
 
@@ -44,7 +44,7 @@ export const CreateAccount = ({navigation}) => {
             // onChangeText={onChangeText}
             />
 
-            <Button  onPress={() => navigation.replace("Login")}>
+            <Button onPress={() => navigation.replace("Login")}>
                 <ButtonTitle>Cadastrar</ButtonTitle>
             </Button>
 

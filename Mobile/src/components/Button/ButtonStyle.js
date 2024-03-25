@@ -18,6 +18,14 @@ margin-bottom: 50px;
 height: 44px;
 
 `
+export const ButtonLogout = styled(Button)`
+ background-color: #ACABB7;
+ width: 60%;
+ margin-bottom: 50px;
+ height: 44px;
+ border: none;
+
+`
 
 export const ButtonGoogle = styled(Button)`
     background-color: #FAFAFA;
