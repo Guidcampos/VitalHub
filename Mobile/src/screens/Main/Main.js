@@ -5,15 +5,31 @@ import { UserProfile } from '../UserProfile/UserProfile';
 import { ContentIcon, TextIcon } from './Style';
 
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MedicalConsultations } from '../MedicalConsultations/MedicalConsultations';
+import { userDecodeToken } from '../../utils/Auth';
 
 
 const BottomTap = createBottomTabNavigator();
 
 export const Main = () => {
 
-    const [profile, setShowProfile] = useState("Paciente")
+    const [profile, setShowProfile] = useState("")
+
+    async function profileLoad() {
+
+        const token = await userDecodeToken()
+        if (token) {
+            console.log("ROLE");
+            console.log(token.role);
+            setShowProfile(token.role)
+        }
+    }
+
+    useEffect(() => {
+        profileLoad()
+    }, [])
+
 
     return (
         profile === "Paciente" ?
