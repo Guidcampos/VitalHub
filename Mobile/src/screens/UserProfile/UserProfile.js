@@ -4,9 +4,27 @@ import { Button, ButtonProfile } from "../../components/Button/ButtonStyle"
 import { Container, ContainerInput, ScrollProfile } from "../../components/Container/ContainerStyle"
 import { UserImage } from "../../components/Logo/LogoStyle"
 import { ButtonTitle, SubtitleProfile, TitleProfile } from "../../components/Title/TitleStyle"
-
+import { useState, useEffect } from "react"
+import {ActivityIndicator} from "react-native"
+import { userDecodeToken } from "../../utils/Auth"
+import { LoaderForPages } from "../../components/Loader/Loader"
 
 export const UserProfile = () => {
+    const [token,setToken] = useState({})
+    async function ProfileLoad() {
+        const token = await userDecodeToken()
+
+        if (token) {
+            console.log(token)
+        }
+        setToken(token);
+        
+    }
+    useEffect(()=>{
+        
+        ProfileLoad()
+
+    },[])
     return(
         <ScrollProfile>
             <Container>
@@ -14,10 +32,10 @@ export const UserProfile = () => {
             <UserImage 
                 source={require('../../assets/ProfileImage.png')}
             />
+            
+            <TitleProfile>{token.name}</TitleProfile>
 
-            <TitleProfile>Richard Kosta</TitleProfile>
-
-            <SubtitleProfile>richard.kosta@gmail.com</SubtitleProfile>
+            <SubtitleProfile>{token.email}</SubtitleProfile>
 
             <BoxInput
             textLabel='Data de Nascimento'
@@ -64,12 +82,15 @@ export const UserProfile = () => {
             </Button>
 
             <ButtonProfile>
-                <ButtonTitle>Editar</ButtonTitle>
+                <ButtonTitle>Editar
+                <LoaderForPages/>
+                </ButtonTitle>
             </ButtonProfile>
 
             <StatusBar barStyle='dark-content' translucent backgroundColor='transparent'/>
-
+            
             </Container>
         </ScrollProfile>
     )
+    
 }

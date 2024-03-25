@@ -4,7 +4,8 @@ import { BoxUser, DataUser, ImageUser, NameUser, TextDefault } from "./HomeStyle
 import { userDecodeToken } from "../../utils/Auth";
 import { useEffect, useState } from "react";
 export const Header = () => {
-    const [token,setToken] = useState()
+    const [token,setToken] = useState({})
+    
     async function ProfileLoad() {
         const token = await userDecodeToken()
 
@@ -15,6 +16,7 @@ export const Header = () => {
         
     }
     useEffect(()=>{
+        
         ProfileLoad()
     },[])
     return (
@@ -26,7 +28,7 @@ export const Header = () => {
                 <ImageUser
                     source={require('../../assets/unsplash_3HIroMoyre8.png')}
                 />
-
+                
                 <DataUser>
                     <TextDefault>Bem Vindo !</TextDefault>
                     <NameUser>{token.name}</NameUser>

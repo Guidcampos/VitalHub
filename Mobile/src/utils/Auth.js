@@ -21,5 +21,6 @@ const decoded = jwtDecode(token)
 return {
     name: decoded.name,
     role: decoded.role,
+    email: decoded.email
 }
 }
