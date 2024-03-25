@@ -7,18 +7,24 @@ import { Button, ButtonGoogle } from "../../components/Button/ButtonStyle"
 import { AntDesign } from '@expo/vector-icons';
 import { useState } from "react"
 import api from "../../services/services"
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const Login = ({navigation}) => {
    const[email, setEmail]= useState('medico@gmail.com')
    const[senha, setSenha] = useState('medico123')
 
     async function Login(){
-
+        console.log('123')
+        
         await api.post('/Login', {
             email: email,
             senha: senha
-        }).then(response => {
+        }).then( async (response) => {
             console.log(response)
+
+            await AsyncStorage.setItem("token",JSON.stringify(response.data))
+
+            navigation.navigate("Main")
         }).catch(error => {
             console.log(error)
         })
@@ -39,7 +45,6 @@ export const Login = ({navigation}) => {
                 placeholder={'Usuário ou E-mail'}
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
-
                 value={email}
                 onChangeText={(txt) => setEmail(txt)}
 
@@ -52,7 +57,6 @@ export const Login = ({navigation}) => {
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
-
                 value={senha}
                 onChangeText={(txt)=> setSenha(txt)}
             // value={fieldValue}
