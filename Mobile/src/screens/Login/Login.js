@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ActivityIndicator } from "react-native"
 
 export const Login = ({ navigation }) => {
-    const [email, setEmail] = useState('guilherme@paciente.com')
+    const [email, setEmail] = useState('gui@paciente.com')
     const [senha, setSenha] = useState('gui123')
     const [loading, setLoading] = useState(false)
 
@@ -25,7 +25,7 @@ export const Login = ({ navigation }) => {
             email: email,
             senha: senha
         }).then(async (response) => {
-            console.log(response)
+            console.log(response.data)
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
             setLoading(false)
             navigation.navigate("Main")

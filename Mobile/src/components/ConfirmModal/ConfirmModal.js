@@ -38,7 +38,7 @@ export const ConfirmModal = ({
 
                         <ConfirmTitle>Local da consulta</ConfirmTitle>
                         <ConfirmSubTitle>São Paulo, SP</ConfirmSubTitle>
-                        
+
                         <ConfirmTitle>Tipo da consulta</ConfirmTitle>
                         <ConfirmSubTitle>Rotina</ConfirmSubTitle>
 
@@ -51,7 +51,7 @@ export const ConfirmModal = ({
                             <ButtonTitle>Continuar</ButtonTitle>
                         </Button>
 
-                        <LinkCodeModal onPress={() => navigation.replace("Main")}>Cancelar</LinkCodeModal>
+                        <LinkCodeModal onPress={() => setShowConfirmModal(false)}>Cancelar</LinkCodeModal>
 
                     </ContainerModalConfirm>
 

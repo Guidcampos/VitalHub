@@ -55,7 +55,7 @@ export const AppointmentCard = ({
                         ) : (
 
                             <ButtonCard onPress={profile !== "Paciente" ? onPressAppointment : () => navigation.replace("ViewPrescription")}
-                        >
+                            >
                                 <ButtonTextCard situacao={situacao}>Ver prontuário</ButtonTextCard>
                             </ButtonCard>
                         )
@@ -131,7 +131,8 @@ export const SelectClinicCard = ({
 
             </ContentMedCard>
 
-            <ContainerRateTime>
+            {/* ------------Container da estrela e dos dias que abre, dasabilitado por enquanto ----------*/}
+            {/* <ContainerRateTime>
 
                 <ContainerRate>
                     <AntDesign name="star" size={20} color="#F9A620" />
@@ -147,7 +148,7 @@ export const SelectClinicCard = ({
 
                 </ContainerDate>
 
-            </ContainerRateTime>
+            </ContainerRateTime> */}
 
 
         </ContainerCardListClinic>

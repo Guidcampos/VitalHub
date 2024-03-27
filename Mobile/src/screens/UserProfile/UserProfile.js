@@ -4,9 +4,26 @@ import { Button, ButtonLogout, ButtonProfile } from "../../components/Button/But
 import { Container, ContainerInput, ScrollProfile } from "../../components/Container/ContainerStyle"
 import { UserImage } from "../../components/Logo/LogoStyle"
 import { ButtonTitle, SubtitleProfile, TitleProfile } from "../../components/Title/TitleStyle"
+import { useEffect, useState } from "react"
+import { userDecodeToken } from "../../utils/Auth"
 
 
 export const UserProfile = () => {
+    const [token, setToken] = useState({})
+    async function ProfileLoad() {
+        const token = await userDecodeToken()
+
+        if (token) {
+            console.log(token)
+        }
+        setToken(token);
+
+    }
+    useEffect(() => {
+
+        ProfileLoad()
+
+    }, [])
     return (
         <ScrollProfile>
             <Container>
@@ -15,9 +32,9 @@ export const UserProfile = () => {
                     source={require('../../assets/ProfileImage.png')}
                 />
 
-                <TitleProfile>Richard Kosta</TitleProfile>
+                <TitleProfile>{token.name}</TitleProfile>
 
-                <SubtitleProfile>richard.kosta@gmail.com</SubtitleProfile>
+                <SubtitleProfile>{token.email}</SubtitleProfile>
 
                 <BoxInput
                     textLabel='Data de Nascimento'

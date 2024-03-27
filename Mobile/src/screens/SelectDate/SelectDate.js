@@ -9,7 +9,7 @@ import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal"
 import { useState } from "react"
 
 
-export const SelectDate = ({navigation}) => {
+export const SelectDate = ({ navigation }) => {
 
     const [showConfirmModal, setShowConfirmModal] = useState(false)
 
@@ -31,7 +31,7 @@ export const SelectDate = ({navigation}) => {
                 <ButtonTitle>Continuar</ButtonTitle>
             </Button>
 
-            <LinkCodeModal onPress={() => navigation.replace("Main")}>Cancelar</LinkCodeModal>
+            <LinkCodeModal onPress={() => navigation.replace("SelectMed")}>Cancelar</LinkCodeModal>
 
             <ConfirmModal
                 visible={showConfirmModal}
