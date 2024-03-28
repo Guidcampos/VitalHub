@@ -20,8 +20,8 @@ export const Main = () => {
 
         const token = await userDecodeToken()
         if (token) {
-            console.log("ROLE");
-            console.log(token.role);
+            // console.log("ROLE");
+            // console.log(token.role);
             setShowProfile(token.role)
         }
     }

@@ -18,14 +18,14 @@ export const Login = ({ navigation }) => {
 
     async function handleLogin() {
         setLoading(true)
-        console.log(loading);
+        // console.log(loading);
 
 
         await api.post('/Login', {
             email: email,
             senha: senha
         }).then(async (response) => {
-            console.log(response.data)
+            // console.log(response.data)
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
             setLoading(false)
             navigation.navigate("Main")

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BtnListAppointment } from "../../components/BtnListAppointment/BtnListAppointment"
 import { CalendarHome } from "../../components/Calendar/Calendar"
 import { Container } from "../../components/Container/ContainerStyle"
@@ -11,14 +11,55 @@ import { BtnIcon } from "./Style"
 import { BookModal } from "../../components/BookModal/BookModal"
 import { QueryModal } from "../../components/QueryModal/QueryModal"
 import { CancellationModal } from "../../components/CancellationModal/CancellationModal"
+import api from "../../services/services"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { userDecodeToken } from "../../utils/Auth"
 
-export const PatientConsultations = ({navigation}) => {
+export const PatientConsultations = ({ navigation }) => {
 
     // state para exibição dos modais 
     const [showModalCancel, setShowModalCancel] = useState(false)
     const [showModalAppointment, setShowModalAppointment] = useState(false)
     const [showBookModal, setShowBookModal] = useState(false)
     const [showQueryModal, setShowQueryModal] = useState(false)
+
+    const [consultasApi, setConsultasApi] = useState([])
+    const [profile, setProfile] = useState({})
+
+    async function ProfileLoad() {
+        const profile = await userDecodeToken()
+
+        if (profile) {
+            console.log(profile)
+        }
+        setProfile(profile);
+
+    }
+
+    // async function GetConsultas() {
+    //     const token = JSON.parse(await AsyncStorage.getItem("token")).token
+
+    //     if (token) {
+
+    //         //Chamando o metodo da api
+    //         await api.get('/Pacientes/BuscarPorData', {
+    //             headers: { Authorization: `Bearer ${token}` }
+
+    //         }).then(async (response) => {
+    //             console.log(response.data);
+    //             setConsultasApi(response.data)
+
+    //         }).catch(error => {
+    //             console.log(error)
+    //         })
+    //     }
+
+    // }
+
+    useEffect(() => {
+        // GetConsultas();
+        ProfileLoad();
+    }, []);
 
     const Consultas = [
         { id: 1, nome: "Vinicius", situacao: "pendente" },
@@ -74,7 +115,7 @@ export const PatientConsultations = ({navigation}) => {
                         statusLista == item.situacao && (
                             <AppointmentCard
                                 situacao={item.situacao}
-                                onPressCard={() => setShowQueryModal(item.situacao === "pendente" ? true : false)  }
+                                onPressCard={() => setShowQueryModal(item.situacao === "pendente" ? true : false)}
                                 onPressCancel={() => setShowModalCancel(true)}
                                 onPressAppointment={() => setShowModalAppointment(true)}
                                 navigation={navigation}
@@ -105,10 +146,10 @@ export const PatientConsultations = ({navigation}) => {
                 setShowQueryModal={setShowQueryModal}
                 navigation={navigation}
             />
-            
-              {/* Modal cancelar */}
 
-              <CancellationModal
+            {/* Modal cancelar */}
+
+            <CancellationModal
                 visible={showModalCancel}
                 setShowModalCancel={setShowModalCancel}
                 navigation={navigation}

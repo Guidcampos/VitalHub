@@ -12,8 +12,8 @@ export const Header = () => {
 
         const token = await userDecodeToken()
         if (token) {
-            console.log("TOKEN");
-            console.log(token);
+            // console.log("TOKEN");
+            // console.log(token);
             setToken(token)
         }
     }
