@@ -14,6 +14,7 @@ import { CancellationModal } from "../../components/CancellationModal/Cancellati
 import api from "../../services/services"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { userDecodeToken } from "../../utils/Auth"
+import { dateFormatDbToView, functionPrioridade } from "../../utils/StringFunction"
 
 export const PatientConsultations = ({ navigation }) => {
 
@@ -36,38 +37,38 @@ export const PatientConsultations = ({ navigation }) => {
 
     }
 
-    // async function GetConsultas() {
-    //     const token = JSON.parse(await AsyncStorage.getItem("token")).token
+    async function GetConsultas() {
+        const token = JSON.parse(await AsyncStorage.getItem("token")).token
 
-    //     if (token) {
+        if (token) {
 
-    //         //Chamando o metodo da api
-    //         await api.get('/Pacientes/BuscarPorData', {
-    //             headers: { Authorization: `Bearer ${token}` }
+            //Chamando o metodo da api
+            await api.get('/Consultas', {
+                headers: { Authorization: `Bearer ${token}` }
 
-    //         }).then(async (response) => {
-    //             console.log(response.data);
-    //             setConsultasApi(response.data)
+            }).then(async (response) => {
+                // console.log(response.data);
+                setConsultasApi(response.data)
 
-    //         }).catch(error => {
-    //             console.log(error)
-    //         })
-    //     }
+            }).catch(error => {
+                console.log(error)
+            })
+        }
 
-    // }
+    }
 
     useEffect(() => {
-        // GetConsultas();
+        GetConsultas();
         ProfileLoad();
     }, []);
 
-    const Consultas = [
-        { id: 1, nome: "Vinicius", situacao: "pendente" },
-        { id: 2, nome: "Vinicius", situacao: "realizado" },
-        { id: 3, nome: "Vinicius", situacao: "cancelado" },
-        { id: 4, nome: "Vinicius", situacao: "realizado" },
-        { id: 5, nome: "Vinicius", situacao: "cancelado" }
-    ];
+    // const Consultas = [
+    //     { id: 1, nome: "Vinicius", situacao: "pendente" },
+    //     { id: 2, nome: "Vinicius", situacao: "realizado" },
+    //     { id: 3, nome: "Vinicius", situacao: "cancelado" },
+    //     { id: 4, nome: "Vinicius", situacao: "realizado" },
+    //     { id: 5, nome: "Vinicius", situacao: "cancelado" }
+    // ];
 
     // state para o estado da lista(card)
     const [statusLista, setStatusLista] = useState("pendente")
@@ -84,22 +85,22 @@ export const PatientConsultations = ({ navigation }) => {
                 {/* Agendadas */}
                 <BtnListAppointment
                     textButton={"Agendadas"}
-                    clickButton={statusLista === "pendente"}
-                    onPress={() => setStatusLista("pendente")}
+                    clickButton={statusLista === "Agendadas"}
+                    onPress={() => setStatusLista("Agendadas")}
                 />
 
                 {/* Realizadas */}
                 <BtnListAppointment
                     textButton={"Realizadas"}
-                    clickButton={statusLista === "realizado"}
-                    onPress={() => setStatusLista("realizado")}
+                    clickButton={statusLista === "Realizadas"}
+                    onPress={() => setStatusLista("Realizadas")}
                 />
 
                 {/* Canceladas */}
                 <BtnListAppointment
                     textButton={"Canceladas"}
-                    clickButton={statusLista === "cancelado"}
-                    onPress={() => setStatusLista("cancelado")}
+                    clickButton={statusLista === "Canceladas"}
+                    onPress={() => setStatusLista("Canceladas")}
                 />
 
             </FilterAppointment>
@@ -107,21 +108,21 @@ export const PatientConsultations = ({ navigation }) => {
             {/* lista */}
             <ListComponent
 
-                data={Consultas}
+                data={consultasApi}
                 keyExtractor={(item) => item.id}
 
                 renderItem={
                     ({ item }) =>
-                        statusLista == item.situacao && (
+                        statusLista == item.situacao.situacao && (
                             <AppointmentCard
-                                situacao={item.situacao}
-                                onPressCard={() => setShowQueryModal(item.situacao === "pendente" ? true : false)}
+                                situacao={item.situacao.situacao}
+                                onPressCard={() => setShowQueryModal(item.situacao.situacao === "Agendadas" ? true : false)}
                                 onPressCancel={() => setShowModalCancel(true)}
                                 onPressAppointment={() => setShowModalAppointment(true)}
                                 navigation={navigation}
-                                ProfileNameCard="Dr. Claudio"
-                                Age="22 anos"
-                                TipoConsulta="Rotina"
+                                ProfileNameCard={item.medicoClinica.medico.idNavigation.nome}
+                                Age={dateFormatDbToView(item.dataConsulta)}
+                                TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
                             />
                         )
                 }

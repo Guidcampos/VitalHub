@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 
 export const AppointmentCard = ({
-    situacao = "pendente",
+    situacao = "Agendadas",
     onPressCancel,
     onPressAppointment,
     ProfileNameCard,
@@ -39,15 +39,15 @@ export const AppointmentCard = ({
                 <ViewRow>
 
                     <ClockCard situacao={situacao}>
-                        <AntDesign name="clockcircle" size={14} color={situacao == "pendente" ? "#49B3BA" : "#8C8A97"} />
+                        <AntDesign name="clockcircle" size={14} color={situacao == "Agendadas" ? "#49B3BA" : "#8C8A97"} />
                         <TextBold situacao={situacao} color={"#49b3baq"}>14:00</TextBold>
                     </ClockCard>
 
                     {
-                        situacao == "cancelado" ? (
+                        situacao == "Canceladas" ? (
                             <>
                             </>
-                        ) : situacao == "pendente" ? (
+                        ) : situacao == "Agendadas" ? (
 
                             <ButtonCard onPress={onPressCancel}>
                                 <ButtonTextCard situacao={situacao}>Cancelar</ButtonTextCard>
