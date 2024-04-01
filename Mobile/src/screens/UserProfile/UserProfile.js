@@ -6,9 +6,10 @@ import { UserImage } from "../../components/Logo/LogoStyle"
 import { ButtonTitle, SubtitleProfile, TitleProfile } from "../../components/Title/TitleStyle"
 import { useEffect, useState } from "react"
 import { userDecodeToken } from "../../utils/Auth"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 
-export const UserProfile = () => {
+export const UserProfile = ({navigation}) => {
     const [token, setToken] = useState({})
     async function ProfileLoad() {
         const token = await userDecodeToken()
@@ -84,7 +85,10 @@ export const UserProfile = () => {
                     <ButtonTitle>Editar</ButtonTitle>
                 </ButtonProfile>
 
-                <ButtonLogout>
+                <ButtonLogout onPress = {()=>{
+                    AsyncStorage.clear(),
+                    navigation.replace("Login")
+                }}>
                     <ButtonTitle>Sair</ButtonTitle>
                 </ButtonLogout>
 
