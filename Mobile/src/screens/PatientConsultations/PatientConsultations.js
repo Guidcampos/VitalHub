@@ -71,7 +71,7 @@ export const PatientConsultations = ({ navigation }) => {
     // ];
 
     // state para o estado da lista(card)
-    const [statusLista, setStatusLista] = useState("pendente")
+    const [statusLista, setStatusLista] = useState("Agendadas")
 
     return (
         <Container>

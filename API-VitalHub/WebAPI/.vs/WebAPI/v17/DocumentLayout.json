@@ -47,8 +47,7 @@
               "RelativeToolTip": "WebAPI\\Repositories\\MedicoRepository.cs",
               "ViewState": "AQIAAGwAAAAAAAAAAAAowG8AAABQAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-01T18:17:05.541Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-01T18:17:05.541Z"
             },
             {
               "$type": "Document",
@@ -60,8 +59,7 @@
               "RelativeToolTip": "WebAPI\\Repositories\\PacienteRepository.cs",
               "ViewState": "AQIAADMAAAAAAAAAAAAYwD0AAABYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-01T18:03:41.996Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-04-01T18:03:41.996Z"
             }
           ]
         }
