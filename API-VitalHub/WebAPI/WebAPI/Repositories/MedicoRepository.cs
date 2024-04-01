@@ -108,6 +108,10 @@ namespace WebAPI.Repositories
 
             return medicos;
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> GuilhermeCampos
         public List<Consulta> BuscarPorData(DateTime dataConsulta, Guid idMedico)
         {
             return ctx.Consultas

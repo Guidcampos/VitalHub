@@ -1,31 +1,37 @@
 import { useEffect, useState } from "react"
-import { BtnListAppointment } from "../../components/BtnListAppointment/BtnListAppointment"
 import { CalendarHome } from "../../components/Calendar/Calendar"
 import { Container } from "../../components/Container/ContainerStyle"
 import { Header } from "../../components/Header/Header"
-import { FilterAppointment } from "../MedicalConsultations/MedicalConsultationsStyles"
+import { FilterAppointment } from "./MedicalConsultationsStyles"
+import { BtnListAppointment } from "../../components/BtnListAppointment/BtnListAppointment"
 import { ListComponent } from "../../components/List/ListStyles"
 import { AppointmentCard } from "../../components/AppointmentCard/AppointmentCard"
-import { FontAwesome6 } from '@expo/vector-icons';
-import { BtnIcon } from "./Style"
-import { BookModal } from "../../components/BookModal/BookModal"
-import { QueryModal } from "../../components/QueryModal/QueryModal"
 import { CancellationModal } from "../../components/CancellationModal/CancellationModal"
-import api from "../../services/services"
-import AsyncStorage from "@react-native-async-storage/async-storage"
+import { AppointmentModal } from "../../components/AppointmentModal/AppointmentModal"
 import { userDecodeToken } from "../../utils/Auth"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import api from "../../services/services"
 import { dateFormatDbToView, functionPrioridade } from "../../utils/StringFunction"
 
-export const PatientConsultations = ({ navigation }) => {
+export const MedicalConsultations = ({ navigation }) => {
+
+    const [consultasApi, setConsultasApi] = useState([])
+    const [profile, setProfile] = useState({})
+
+    // state para o estado da lista(card)
+    const [statusLista, setStatusLista] = useState("pendente")
+
+    const Consultas = [
+        { id: 1, nome: "Vinicius", situacao: "pendente" },
+        { id: 2, nome: "Vinicius", situacao: "realizado" },
+        { id: 3, nome: "Vinicius", situacao: "cancelado" },
+        { id: 4, nome: "Vinicius", situacao: "realizado" },
+        { id: 5, nome: "Vinicius", situacao: "cancelado" }
+    ];
 
     // state para exibição dos modais 
     const [showModalCancel, setShowModalCancel] = useState(false)
     const [showModalAppointment, setShowModalAppointment] = useState(false)
-    const [showBookModal, setShowBookModal] = useState(false)
-    const [showQueryModal, setShowQueryModal] = useState(false)
-
-    const [consultasApi, setConsultasApi] = useState([])
-    const [profile, setProfile] = useState({})
 
     async function ProfileLoad() {
         const profile = await userDecodeToken()
@@ -43,11 +49,11 @@ export const PatientConsultations = ({ navigation }) => {
         if (token) {
 
             //Chamando o metodo da api
-            await api.get('/Consultas', {
+            await api.get('/Consultas/ConsultasMedico', {
                 headers: { Authorization: `Bearer ${token}` }
 
             }).then(async (response) => {
-                // console.log(response.data);
+                console.log(response.data);
                 setConsultasApi(response.data)
 
             }).catch(error => {
@@ -62,16 +68,8 @@ export const PatientConsultations = ({ navigation }) => {
         ProfileLoad();
     }, []);
 
-    // const Consultas = [
-    //     { id: 1, nome: "Vinicius", situacao: "pendente" },
-    //     { id: 2, nome: "Vinicius", situacao: "realizado" },
-    //     { id: 3, nome: "Vinicius", situacao: "cancelado" },
-    //     { id: 4, nome: "Vinicius", situacao: "realizado" },
-    //     { id: 5, nome: "Vinicius", situacao: "cancelado" }
-    // ];
 
-    // state para o estado da lista(card)
-    const [statusLista, setStatusLista] = useState("pendente")
+
 
     return (
         <Container>
@@ -105,6 +103,7 @@ export const PatientConsultations = ({ navigation }) => {
 
             </FilterAppointment>
 
+
             {/* lista */}
             <ListComponent
 
@@ -116,36 +115,16 @@ export const PatientConsultations = ({ navigation }) => {
                         statusLista == item.situacao.situacao && (
                             <AppointmentCard
                                 situacao={item.situacao.situacao}
-                                onPressCard={() => setShowQueryModal(item.situacao.situacao === "Agendadas" ? true : false)}
                                 onPressCancel={() => setShowModalCancel(true)}
                                 onPressAppointment={() => setShowModalAppointment(true)}
-                                navigation={navigation}
-                                ProfileNameCard={item.medicoClinica.medico.idNavigation.nome}
+                                ProfileNameCard={item.paciente.idNavigation.nome}
                                 Age={dateFormatDbToView(item.dataConsulta)}
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
+                                profile={"Medico"}
                             />
                         )
                 }
 
-            />
-
-            <BtnIcon onPress={() => setShowBookModal(true)}>
-                <FontAwesome6 name="stethoscope" size={24} color="white" />
-            </BtnIcon>
-
-            {/* Modal agendar consulta */}
-
-            <BookModal
-                visible={showBookModal}
-                setShowBookModal={setShowBookModal}
-                navigation={navigation}
-            />
-
-            {/* Modal query */}
-            <QueryModal
-                visible={showQueryModal}
-                setShowQueryModal={setShowQueryModal}
-                navigation={navigation}
             />
 
             {/* Modal cancelar */}
@@ -153,9 +132,18 @@ export const PatientConsultations = ({ navigation }) => {
             <CancellationModal
                 visible={showModalCancel}
                 setShowModalCancel={setShowModalCancel}
+
+            />
+
+            {/* Modal ver prontuario */}
+
+            <AppointmentModal
+                visible={showModalAppointment}
+                setShowModalAppointment={setShowModalAppointment}
                 navigation={navigation}
 
             />
+
 
         </Container>
     )
