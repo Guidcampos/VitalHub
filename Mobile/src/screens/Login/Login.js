@@ -10,7 +10,9 @@ import api from "../../services/services"
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { ActivityIndicator } from "react-native"
 
+<<<<<<< HEAD
     async function Login(){
         console.log('123')
         
@@ -21,6 +23,32 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
             console.log(response)
 
             await AsyncStorage.setItem("token",JSON.stringify(response.data))
+=======
+export const Login = ({ navigation }) => {
+    const [email, setEmail] = useState('gui@paciente.com')
+    const [senha, setSenha] = useState('gui123')
+    const [loading, setLoading] = useState(false)
+
+    async function handleLogin() {
+        setLoading(true)
+        // console.log(loading);
+
+
+        await api.post('/Login', {
+            email: email,
+            senha: senha
+        }).then(async (response) => {
+            // console.log(response.data)
+            await AsyncStorage.setItem("token", JSON.stringify(response.data))
+            setLoading(false)
+            navigation.navigate("Main")
+
+        }).catch(error => {
+            console.log(error)
+            setLoading(false)
+        })
+
+>>>>>>> GuilhermeCampos
 
             navigation.navigate("Main")
         }).catch(error => {
@@ -64,11 +92,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
             <LinkMedium onPress={() => navigation.replace("ForgotPassword")}>Esqueceu sua senha?</LinkMedium>
 
-            <Button onPress={(e) => Login()}>
-                <ButtonTitle>Entrar</ButtonTitle>
+            <Button disabled={loading} onPress={() => handleLogin()}>
+                {loading ? <ActivityIndicator /> : <ButtonTitle>Entrar</ButtonTitle>}
             </Button>
 
-            <ButtonGoogle >
+            <ButtonGoogle disabled={loading}>
                 <AntDesign name="google" size={18} color="#496BBA" />
                 <ButtonTitleGoogle>Entrar com o Google</ButtonTitleGoogle>
             </ButtonGoogle>
