@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { SubtitleProfile, TitleProfile } from '../../components/Title/TitleStyle';
 import { BoxInput } from '../../components/BoxInput/BoxInput';
 import { Container, ContainerInput } from '../../components/Container/ContainerStyle';
@@ -6,8 +6,12 @@ import { MapImagem } from './Style';
 import { StatusBar } from 'react-native';
 import { LinkLocation } from '../../components/Links/Links';
 import Map from '../../components/Map/Map';
+import api from '../../services/services';
 
 export const Location = ({navigation}) => {
+    
+   
+
     return (
         <Container>
 

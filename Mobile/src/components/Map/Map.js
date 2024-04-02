@@ -11,13 +11,17 @@ import {
 } from "expo-location";
 import { useEffect, useState, useRef } from "react";
 import { mapskey } from "../../utils/mapsKey";
-
+import api from "../../services/services";
 
 export default function Map() {
+  
   const mapReference = useRef(null)
 
   const [initialPosition, setInitialPosition] = useState(null);
-
+  //api clínica
+  const [clinicaApi, setClinicaApi] = useState()
+  // para pegar a localização da clínica, irei precisar converter a localização em latitude e longitude
+  // é mais simples pegar o cep e coverte-lo direto para long e lat
   const [finalPosition, setFinalPosition] = useState({ latitude: -23.550204, longitude: -46.311381 })
 
   async function CapturarLocalizacao() {
@@ -31,6 +35,26 @@ export default function Map() {
       console.log(initialPosition);
     }
   }
+//Função de converter cep para longitude e latitude
+
+// async function ConverterCep(params) {
+    
+  //     try {
+  //       const cep = ''; // Substitua com o CEP que deseja converter
+  //       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${cep}&key=SUA_CHAVE_API`);
+  //       const data = await response.json();
+  //       if (data.results && data.results.length > 0) {
+  //         const { lat, lng } = data.results[0].geometry.location;
+  //         setCoordinates({ latitude: lat, longitude: lng });
+  //       } else {
+  //         setError('Nenhuma coordenada encontrada para o CEP fornecido.');
+  //       }
+  //     } catch (error) {
+  //       setError('Ocorreu um erro ao buscar as coordenadas. Por favor, tente novamente mais tarde.');
+  //     }
+    
+  // }
+//Função de pegar localização da clínica baseado no cep?
 
   async function RecarregarVisualizacaoMapa() {
     if (mapReference.current && initialPosition) {
