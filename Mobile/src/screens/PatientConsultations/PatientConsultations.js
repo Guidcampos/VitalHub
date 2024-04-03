@@ -15,6 +15,7 @@ import api from "../../services/services"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { userDecodeToken } from "../../utils/Auth"
 import { dateFormatDbToView, functionPrioridade } from "../../utils/StringFunction"
+import moment from "moment"
 
 export const PatientConsultations = ({ navigation }) => {
 
@@ -26,41 +27,63 @@ export const PatientConsultations = ({ navigation }) => {
 
     const [consultasApi, setConsultasApi] = useState([])
     const [profile, setProfile] = useState({})
+    const [dataConsulta, setDataConsulta] = useState('')
 
     async function ProfileLoad() {
-        const profile = await userDecodeToken()
+        const token = await userDecodeToken()
 
-        if (profile) {
-            console.log(profile)
+
+        if (token) {
+            // console.log(token);
+            setProfile(token);
+            setDataConsulta(moment().format('YYYY-MM-DD'))
         }
-        setProfile(profile);
-
     }
 
     async function GetConsultas() {
-        const token = JSON.parse(await AsyncStorage.getItem("token")).token
 
-        if (token) {
-
-            //Chamando o metodo da api
-            await api.get('/Consultas', {
-                headers: { Authorization: `Bearer ${token}` }
-
-            }).then(async (response) => {
-                // console.log(response.data);
-                setConsultasApi(response.data)
-
-            }).catch(error => {
-                console.log(error)
-            })
-        }
+        //Chamando o metodo da api
+        await api.get(`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.id}`
+        ).then(response => {
+            setConsultasApi(response.data)
+        }).catch(error => {
+            console.log(error);
+        })
 
     }
 
+
+    //função listar todas as consultas
+    // async function GetAllConsultas() {
+    //     const token = JSON.parse(await AsyncStorage.getItem("token")).token
+
+    //     if (token) {
+
+    //         //Chamando o metodo da api
+    //         await api.get('/Consultas', {
+    //             headers: { Authorization: `Bearer ${token}` }
+
+    //         }).then(async (response) => {
+    //             // console.log(response.data);
+    //             setConsultasApi(response.data)
+
+    //         }).catch(error => {
+    //             console.log(error)
+    //         })
+    //     }
+
+    // }
+
     useEffect(() => {
-        GetConsultas();
         ProfileLoad();
     }, []);
+
+    useEffect(() => {
+        if (dataConsulta != '') {
+            GetConsultas()
+        }
+    }, [dataConsulta])
+
 
     // const Consultas = [
     //     { id: 1, nome: "Vinicius", situacao: "pendente" },
@@ -70,6 +93,7 @@ export const PatientConsultations = ({ navigation }) => {
     //     { id: 5, nome: "Vinicius", situacao: "cancelado" }
     // ];
 
+
     // state para o estado da lista(card)
     const [statusLista, setStatusLista] = useState("Agendadas")
 
@@ -78,7 +102,7 @@ export const PatientConsultations = ({ navigation }) => {
 
             <Header />
 
-            <CalendarHome />
+            <CalendarHome setDataConsulta={setDataConsulta} />
 
             <FilterAppointment>
 
@@ -121,7 +145,7 @@ export const PatientConsultations = ({ navigation }) => {
                                 onPressAppointment={() => setShowModalAppointment(true)}
                                 navigation={navigation}
                                 ProfileNameCard={item.medicoClinica.medico.idNavigation.nome}
-                                Age={dateFormatDbToView(item.dataConsulta)}
+                                Age={"CRM - " + item.medicoClinica.medico.crm}
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
                             />
                         )
@@ -130,6 +154,7 @@ export const PatientConsultations = ({ navigation }) => {
             />
 
             <BtnIcon onPress={() => setShowBookModal(true)}>
+
                 <FontAwesome6 name="stethoscope" size={24} color="white" />
             </BtnIcon>
 

@@ -27,9 +27,9 @@ export const QueryModal = ({
                     <QueryImageModal source={require('../../assets/MedicQuery.png')} />
 
                     <Title>Dr. Claudio</Title>
-                   
+
                     <ContainerQuery>
-                        
+
                         <QueryModalText>Cliníco geral</QueryModalText>
                         <QueryModalText>CRM-15286</QueryModalText>
 

@@ -59,6 +59,7 @@ namespace WebAPI.Repositories
            return ctx.Consultas
                 .Include(x => x.Situacao)
                 .Include(x => x.MedicoClinica!.Medico!.IdNavigation)
+                .Include (x => x.Prioridade)
                 //diferença em dias entre a data da consulta ea dataconsulta é igual a 0
                 .Where(x  => x.PacienteId == idPaciente && EF.Functions.DateDiffDay( x.DataConsulta, dataConsulta) == 0)
                 .ToList();
