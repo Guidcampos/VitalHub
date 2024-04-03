@@ -36,7 +36,7 @@ export const PatientConsultations = ({ navigation }) => {
         setProfile(profile);
 
     }
-
+   
     async function GetConsultas() {
         const token = JSON.parse(await AsyncStorage.getItem("token")).token
 
@@ -54,6 +54,11 @@ export const PatientConsultations = ({ navigation }) => {
                 console.log(error)
             })
         }
+
+    }
+    async function handlePress( rota ){
+        
+        navigation.replace(rota, {clinicaId: consultasApi.medicoClinica.clinicaId})
 
     }
 

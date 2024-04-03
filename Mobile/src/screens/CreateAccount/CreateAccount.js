@@ -6,30 +6,60 @@ import { LinkCode } from "../../components/Links/Links"
 import { Logo } from "../../components/Logo/LogoStyle"
 import { ButtonTitle, Subtitle, Title } from "../../components/Title/TitleStyle"
 import api from "../../services/services"
+import { Alert } from "react-native"
 
 export const CreateAccount = ({ navigation }) => {
     const [email,setEmail] =  useState('')
     const [senha,setSenha] =  useState('')
+    const [verificarSenha,setVerificarSenha] = useState('')
     const [idTipoUsuario,setTipoUsuario] = useState('74A2CCB7-27C8-42D8-86BA-2880CD98EC7C')
-    async function cadastrar() {
-        try{
-            await api.post("/Pacientes",{
-            email:email,
-            senha:senha,
-            idTipoUsuario: idTipoUsuario,
-        })  
-        console.log("Cadastrado com sucesso")
-        
-        }catch(error){
 
-            console.log("erro ao cadastrar")
+    async function cadastrar(verificarSenha, senha) {
+        if(email === ""){
+            Alert.alert(
+                "Erro", "Favor preencher o campo email"
+                 )
+            
         }
-       
+        else if(senha === ""){
+            Alert.alert(
+                "Erro", "Favor preencher o campo senha"
+                 )
+           
+        }
+        else if(verificarSenha === ""){
+            Alert.alert(
+                "Erro", "Favor preencher o campo confirmar senha"
+                 )
+            
+        }
+        else if(verificarSenha === senha){
+            
+            try{
+                await api.post("/Pacientes",{
+                email:email,
+                senha:senha,
+                idTipoUsuario: idTipoUsuario,
+            })  
+            console.log("Cadastrado com sucesso")
+
+            navigation.replace("Login")
+            }catch(error){
+    
+                console.log("erro ao cadastrar")
+            }
+
+        }
+        else{
+            console.log("Senhas não batem")
+            Alert.alert(
+               "Erro", "Senhas não batem"
+                )
+        }
     }
 
     return (
         <Container>
-
 
             <Logo
                 source={require('../../assets/VitalHub_Logo.png')}
@@ -61,14 +91,14 @@ export const CreateAccount = ({ navigation }) => {
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
-                value={senha}
-                onChangeText={(txt) => setSenha(txt)}
+                value={verificarSenha}
+                onChangeText={
+                (txt) => setVerificarSenha(txt)
+                }
             />
-
-            <Button onPress={() =>
-                
-                navigation.replace("Login")}>
-                <ButtonTitle onPress = {() => cadastrar()}>Cadastrar</ButtonTitle>
+            
+            <Button>
+                <ButtonTitle onPress = {() => cadastrar(verificarSenha,senha)}>Cadastrar</ButtonTitle>
             </Button>
 
             <LinkCode onPress={() => navigation.replace("Login")}>Cancelar</LinkCode>

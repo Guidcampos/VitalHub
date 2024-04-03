@@ -20,7 +20,7 @@ export const Login = ({ navigation }) => {
         setLoading(true)
         // console.log(loading);
 
-
+        console.log('inicio')
         await api.post('/Login', {
             email: email,
             senha: senha
@@ -34,7 +34,7 @@ export const Login = ({ navigation }) => {
             console.log(error)
             setLoading(false)
         })
-
+        console.log('fim')
         
     }
 

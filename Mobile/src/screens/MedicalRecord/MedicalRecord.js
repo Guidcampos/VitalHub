@@ -11,7 +11,7 @@ export const MedicalRecord = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         
         >
-
+        
             <Container>
 
                 <UserImage
