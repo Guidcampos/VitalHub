@@ -7,6 +7,7 @@ import { QueryContainerModal, QueryImageModal, QueryModalContent, QueryModalText
 
 export const QueryModal = ({
     visible,
+    medico,
     navigation,
     setShowQueryModal,
     ...rest
@@ -26,16 +27,16 @@ export const QueryModal = ({
 
                     <QueryImageModal source={require('../../assets/MedicQuery.png')} />
 
-                    <Title>Dr. Claudio</Title>
+                    <Title>{medico.nome}</Title>
 
                     <ContainerQuery>
 
-                        <QueryModalText>Cliníco geral</QueryModalText>
-                        <QueryModalText>CRM-15286</QueryModalText>
+                        <QueryModalText>{medico.especialidade}</QueryModalText>
+                        <QueryModalText>CRM-{medico.crm}</QueryModalText>
 
                     </ContainerQuery>
 
-                    <ButtonModal onPress={() => navigation.replace("Location")}>
+                    <ButtonModal onPress={() => navigation.replace("Location", { ClinicaId: medico.clinica })}>
                         <ButtonTitle>Ver local da consulta</ButtonTitle>
                     </ButtonModal>
 

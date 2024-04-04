@@ -29,6 +29,8 @@ export const PatientConsultations = ({ navigation }) => {
     const [profile, setProfile] = useState({})
     const [dataConsulta, setDataConsulta] = useState('')
 
+    const [medicoModal, setMedicoModal] = useState({ nome: '', especialidade: '', crm: '', clinica: '' })
+
     async function ProfileLoad() {
         const token = await userDecodeToken()
 
@@ -140,7 +142,15 @@ export const PatientConsultations = ({ navigation }) => {
                         statusLista == item.situacao.situacao && (
                             <AppointmentCard
                                 situacao={item.situacao.situacao}
-                                onPressCard={() => setShowQueryModal(item.situacao.situacao === "Agendadas" ? true : false)}
+                                onPressCard={() => {
+                                    setShowQueryModal(item.situacao.situacao === "Agendadas" ? true : false),
+                                        setMedicoModal({
+                                            nome: item.medicoClinica.medico.idNavigation.nome,
+                                            crm: item.medicoClinica.medico.crm,
+                                            especialidade: item.medicoClinica.medico.especialidade.especialidade1,
+                                            clinica: item.medicoClinica.clinicaId
+                                        })
+                                }}
                                 onPressCancel={() => setShowModalCancel(true)}
                                 onPressAppointment={() => setShowModalAppointment(true)}
                                 navigation={navigation}
@@ -171,6 +181,7 @@ export const PatientConsultations = ({ navigation }) => {
                 visible={showQueryModal}
                 setShowQueryModal={setShowQueryModal}
                 navigation={navigation}
+                medico={medicoModal}
             />
 
             {/* Modal cancelar */}

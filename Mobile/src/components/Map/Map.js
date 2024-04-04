@@ -13,12 +13,12 @@ import { useEffect, useState, useRef } from "react";
 import { mapskey } from "../../utils/mapsKey";
 
 
-export default function Map() {
+export default function Map({ latitude, longitude }) {
   const mapReference = useRef(null)
 
   const [initialPosition, setInitialPosition] = useState(null);
-
-  const [finalPosition, setFinalPosition] = useState({ latitude: -23.550204, longitude: -46.311381 })
+  // { latitude: -23.550204, longitude: -46.311381 }
+  const [finalPosition, setFinalPosition] = useState({ latitude: -23.550182, longitude: -46.311383 })
 
   async function CapturarLocalizacao() {
     const { granted } = await requestForegroundPermissionsAsync();
@@ -41,7 +41,7 @@ export default function Map() {
         ],
         {
           edgePadding: { top: 60, right: 60, bottom: 60, left: 60 },
-          animated : true
+          animated: true
         }
       )
     }
@@ -66,7 +66,7 @@ export default function Map() {
     // })'
 
   }, [10000]);
-  
+
   useEffect(() => {
     RecarregarVisualizacaoMapa();
   }, [initialPosition]);
