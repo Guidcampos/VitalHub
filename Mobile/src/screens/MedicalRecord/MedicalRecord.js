@@ -1,11 +1,54 @@
+import { useEffect, useState } from "react"
 import { BoxInputMedical, BoxInputMedicalRecord } from "../../components/BoxInput/BoxInput"
 import { Button } from "../../components/Button/ButtonStyle"
 import { Container, ContainerMedicalRecord, ScrollProfile } from "../../components/Container/ContainerStyle"
 import { LinkCode } from "../../components/Links/Links"
 import { UserImage } from "../../components/Logo/LogoStyle"
 import { ButtonTitle, SubtitleMedicalRecord, TitleProfile } from "../../components/Title/TitleStyle"
+import api from "../../services/services"
+import { userDecodeToken } from "../../utils/Auth"
+import { ActivityIndicator } from "react-native"
+import { dateFormatDbToView } from "../../utils/StringFunction"
 
-export const MedicalRecord = ({navigation}) => {
+export const MedicalRecord = ({
+    navigation,
+    route
+}) => {
+
+    const [token,setToken] = useState({})
+    const [pacienteApi, setPacienteApi] = useState(null)
+   
+    
+    
+   
+    async function LoadMedicalRecord(){
+        const token = await userDecodeToken()
+        if (token) {
+            console.log(token)
+        }
+        setToken(token);
+    }
+    
+    async function PacienteApi(){
+    await api.get(`/Pacientes/BuscarPorId?id=${route.params.idPaciente}`,{
+        headers: {Authorization: `Bearer ${token}`}
+    }).then(response =>
+        {
+            setPacienteApi(response.data)
+            console.log(response.data)
+        }).catch(error =>{
+            console.log(error)
+        })
+    
+    }
+    useEffect(()=>{
+        
+        LoadMedicalRecord()
+       if (pacienteApi == null) {
+        PacienteApi()
+       } 
+       
+    },[pacienteApi])
     return (
         <ScrollProfile 
         showsVerticalScrollIndicator={false}
@@ -13,19 +56,20 @@ export const MedicalRecord = ({navigation}) => {
         >
         
             <Container>
-
+                {pacienteApi !== null ? (
+                    <>
                 <UserImage
                     source={require('../../assets/ProfileImage.png')}
                 />
 
-                <TitleProfile>Richard Kosta</TitleProfile>
+                <TitleProfile>{pacienteApi.idNavigation.nome}</TitleProfile>
 
 
                 <ContainerMedicalRecord>
 
-                    <SubtitleMedicalRecord>22 anos</SubtitleMedicalRecord>
+                    <SubtitleMedicalRecord>{route.params.idade} anos</SubtitleMedicalRecord>
 
-                    <SubtitleMedicalRecord>richard.kosta@gmail.com</SubtitleMedicalRecord>
+                    <SubtitleMedicalRecord>{pacienteApi.idNavigation.email}</SubtitleMedicalRecord>
 
 
                 </ContainerMedicalRecord>
@@ -59,8 +103,8 @@ export const MedicalRecord = ({navigation}) => {
             
                 <LinkCode onPress = {() => navigation.replace("Main")}>Cancelar</LinkCode>
 
-
-
+                </>
+                ):<ActivityIndicator/>}
             </Container>
 
         </ScrollProfile>

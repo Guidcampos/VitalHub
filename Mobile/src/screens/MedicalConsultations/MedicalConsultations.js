@@ -32,6 +32,8 @@ export const MedicalConsultations = ({ navigation }) => {
     // state para exibição dos modais 
     const [showModalCancel, setShowModalCancel] = useState(false)
     const [showModalAppointment, setShowModalAppointment] = useState(false)
+    const [pacienteModal, setPacienteModal] = useState({nome:'', email: '', data: '', idPaciente : ''})
+    
 
     async function ProfileLoad() {
         const profile = await userDecodeToken()
@@ -116,7 +118,12 @@ export const MedicalConsultations = ({ navigation }) => {
                             <AppointmentCard
                                 situacao={item.situacao.situacao}
                                 onPressCancel={() => setShowModalCancel(true)}
-                                onPressAppointment={() => setShowModalAppointment(true)}
+                                onPressAppointment={() => {
+                                    setShowModalAppointment(true)
+                                    setPacienteModal({nome: item.paciente.idNavigation.nome, email: item.paciente.idNavigation.email, data: item.paciente.dataNascimento, idPaciente: item.pacienteId})
+                                }
+                                    
+                                    }
                                 ProfileNameCard={item.paciente.idNavigation.nome}
                                 Age={dateFormatDbToView(item.dataConsulta)}
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
@@ -141,7 +148,7 @@ export const MedicalConsultations = ({ navigation }) => {
                 visible={showModalAppointment}
                 setShowModalAppointment={setShowModalAppointment}
                 navigation={navigation}
-
+                paciente = {pacienteModal}
             />
 
 
