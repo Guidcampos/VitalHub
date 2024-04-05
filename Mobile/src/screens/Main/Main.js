@@ -14,7 +14,7 @@ const BottomTap = createBottomTabNavigator();
 
 export const Main = () => {
 
-    const [profile, setShowProfile] = useState("")
+    const [profile, setShowProfile] = useState("Paciente")
 
     async function profileLoad() {
 

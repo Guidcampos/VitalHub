@@ -13,12 +13,12 @@ import { useEffect, useState, useRef } from "react";
 import { mapskey } from "../../utils/mapsKey";
 
 
-export default function Map({ latitude, longitude }) {
+export default function Map({ latitude, longitude, titleClinica }) {
   const mapReference = useRef(null)
 
   const [initialPosition, setInitialPosition] = useState(null);
   // { latitude: -23.550204, longitude: -46.311381 }
-  const [finalPosition, setFinalPosition] = useState({ latitude: -23.550182, longitude: -46.311383 })
+  const [finalPosition, setFinalPosition] = useState({ latitude: latitude, longitude: longitude })
 
   async function CapturarLocalizacao() {
     const { granted } = await requestForegroundPermissionsAsync();
@@ -26,9 +26,11 @@ export default function Map({ latitude, longitude }) {
     if (granted) {
       const currentPosition = await getCurrentPositionAsync();
 
-      await setInitialPosition(currentPosition);
+      setInitialPosition(currentPosition);
 
-      console.log(initialPosition);
+      // console.log(initialPosition);
+      // console.log(finalPosition.latitude);
+      // console.log(finalPosition.longitude);
     }
   }
 
@@ -95,8 +97,8 @@ export default function Map({ latitude, longitude }) {
               latitude: initialPosition.coords.latitude,
               longitude: initialPosition.coords.longitude
             }}
-            title='SENAI INFO'
-            description='Aprendendo a marcar no mapa'
+            title='Meu Local'
+            description='você está aqui'
           />
           <Marker
 
@@ -106,17 +108,17 @@ export default function Map({ latitude, longitude }) {
               longitude: finalPosition.longitude
 
             }}
-            title='Suzano'
-            description='Aprendendo a marcar no mapa'
+            title={titleClinica}
+          // description='Aprendendo a marcar no mapa'
 
           />
 
           <MapViewDirections
             origin={initialPosition.coords}
             destination={{
-              latitude: -23.550204,
+              latitude: finalPosition.latitude,
 
-              longitude: -46.311381
+              longitude: finalPosition.longitude
 
             }}
             apikey={mapskey}

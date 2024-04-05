@@ -30,6 +30,11 @@ export const PatientConsultations = ({ navigation }) => {
     const [dataConsulta, setDataConsulta] = useState('')
 
     const [medicoModal, setMedicoModal] = useState({ nome: '', especialidade: '', crm: '', clinica: '' })
+    //state para cancelar consulta
+    const [consultaCancel, setConsultaCancel] = useState({
+        id: '',
+        situacaoId: "DFCEBD4F-A79B-4989-8507-82DD6004B7E7"
+    })
 
     async function ProfileLoad() {
         const token = await userDecodeToken()
@@ -84,7 +89,7 @@ export const PatientConsultations = ({ navigation }) => {
         if (dataConsulta != '') {
             GetConsultas()
         }
-    }, [dataConsulta])
+    }, [dataConsulta, consultasApi])
 
 
     // const Consultas = [
@@ -151,7 +156,10 @@ export const PatientConsultations = ({ navigation }) => {
                                             clinica: item.medicoClinica.clinicaId
                                         })
                                 }}
-                                onPressCancel={() => setShowModalCancel(true)}
+                                onPressCancel={() => {
+                                    setShowModalCancel(true),
+                                        setConsultaCancel(prevState => ({ ...prevState, id: item.id }))
+                                }}
                                 onPressAppointment={() => setShowModalAppointment(true)}
                                 navigation={navigation}
                                 ProfileNameCard={item.medicoClinica.medico.idNavigation.nome}
@@ -190,6 +198,7 @@ export const PatientConsultations = ({ navigation }) => {
                 visible={showModalCancel}
                 setShowModalCancel={setShowModalCancel}
                 navigation={navigation}
+                consultaCancel={consultaCancel}
 
             />
 
