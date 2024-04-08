@@ -6,6 +6,7 @@ import { LinkCode } from "../../components/Links/Links"
 import { Logo } from "../../components/Logo/LogoStyle"
 import { ButtonTitle, Subtitle, Title } from "../../components/Title/TitleStyle"
 import api from "../../services/services"
+<<<<<<< HEAD
 import { Alert } from "react-native"
 
 export const CreateAccount = ({ navigation }) => {
@@ -56,6 +57,27 @@ export const CreateAccount = ({ navigation }) => {
                "Erro", "Senhas não batem"
                 )
         }
+=======
+
+export const CreateAccount = ({ navigation }) => {
+    const [email, setEmail] = useState('')
+    const [senha, setSenha] = useState('')
+    const [idTipoUsuario, setTipoUsuario] = useState('775747A8-EC31-4288-B27E-BF43CE94812A')
+    async function cadastrar() {
+        try {
+            await api.post("/Pacientes", {
+                email: email,
+                senha: senha,
+                idTipoUsuario: idTipoUsuario,
+            })
+            console.log("Cadastrado com sucesso")
+
+        } catch (error) {
+
+            console.log("erro ao cadastrar")
+        }
+
+>>>>>>> GuilhermeCampos
     }
 
     return (
@@ -91,6 +113,7 @@ export const CreateAccount = ({ navigation }) => {
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
+<<<<<<< HEAD
                 value={verificarSenha}
                 onChangeText={
                 (txt) => setVerificarSenha(txt)
@@ -99,6 +122,16 @@ export const CreateAccount = ({ navigation }) => {
             
             <Button>
                 <ButtonTitle onPress = {() => cadastrar(verificarSenha,senha)}>Cadastrar</ButtonTitle>
+=======
+                value={senha}
+                onChangeText={(txt) => setSenha(txt)}
+            />
+
+            <Button onPress={() =>
+
+                navigation.replace("Login")}>
+                <ButtonTitle onPress={() => cadastrar()}>Cadastrar</ButtonTitle>
+>>>>>>> GuilhermeCampos
             </Button>
 
             <LinkCode onPress={() => navigation.replace("Login")}>Cancelar</LinkCode>

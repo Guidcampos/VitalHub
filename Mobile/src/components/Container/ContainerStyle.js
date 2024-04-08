@@ -106,3 +106,8 @@ justify-content: space-between;
 flex-direction: row;
 margin-bottom: 30px;
 `
+
+export const ScrollViewLocation = styled.ScrollView`
+width: 100%;
+
+`

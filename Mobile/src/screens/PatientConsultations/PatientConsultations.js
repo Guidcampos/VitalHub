@@ -15,6 +15,7 @@ import api from "../../services/services"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { userDecodeToken } from "../../utils/Auth"
 import { dateFormatDbToView, functionPrioridade } from "../../utils/StringFunction"
+import moment from "moment"
 
 export const PatientConsultations = ({ navigation }) => {
 
@@ -26,34 +27,35 @@ export const PatientConsultations = ({ navigation }) => {
 
     const [consultasApi, setConsultasApi] = useState([])
     const [profile, setProfile] = useState({})
+    const [dataConsulta, setDataConsulta] = useState('')
+
+    const [medicoModal, setMedicoModal] = useState({ nome: '', especialidade: '', crm: '', clinica: '' })
+    //state para cancelar consulta
+    const [consultaCancel, setConsultaCancel] = useState({
+        id: '',
+        situacaoId: "DFCEBD4F-A79B-4989-8507-82DD6004B7E7"
+    })
 
     async function ProfileLoad() {
-        const profile = await userDecodeToken()
+        const token = await userDecodeToken()
 
-        if (profile) {
-            console.log(profile)
+
+        if (token) {
+            // console.log(token);
+            setProfile(token);
+            setDataConsulta(moment().format('YYYY-MM-DD'))
         }
-        setProfile(profile);
-
     }
    
     async function GetConsultas() {
-        const token = JSON.parse(await AsyncStorage.getItem("token")).token
 
-        if (token) {
-
-            //Chamando o metodo da api
-            await api.get('/Consultas', {
-                headers: { Authorization: `Bearer ${token}` }
-
-            }).then(async (response) => {
-                // console.log(response.data);
-                setConsultasApi(response.data)
-
-            }).catch(error => {
-                console.log(error)
-            })
-        }
+        //Chamando o metodo da api
+        await api.get(`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.id}`
+        ).then(response => {
+            setConsultasApi(response.data)
+        }).catch(error => {
+            console.log(error);
+        })
 
     }
     async function handlePress( rota ){
@@ -62,10 +64,38 @@ export const PatientConsultations = ({ navigation }) => {
 
     }
 
+
+    //função listar todas as consultas
+    // async function GetAllConsultas() {
+    //     const token = JSON.parse(await AsyncStorage.getItem("token")).token
+
+    //     if (token) {
+
+    //         //Chamando o metodo da api
+    //         await api.get('/Consultas', {
+    //             headers: { Authorization: `Bearer ${token}` }
+
+    //         }).then(async (response) => {
+    //             // console.log(response.data);
+    //             setConsultasApi(response.data)
+
+    //         }).catch(error => {
+    //             console.log(error)
+    //         })
+    //     }
+
+    // }
+
     useEffect(() => {
-        GetConsultas();
         ProfileLoad();
     }, []);
+
+    useEffect(() => {
+        if (dataConsulta != '') {
+            GetConsultas()
+        }
+    }, [dataConsulta, consultasApi])
+
 
     // const Consultas = [
     //     { id: 1, nome: "Vinicius", situacao: "pendente" },
@@ -75,15 +105,16 @@ export const PatientConsultations = ({ navigation }) => {
     //     { id: 5, nome: "Vinicius", situacao: "cancelado" }
     // ];
 
+
     // state para o estado da lista(card)
-    const [statusLista, setStatusLista] = useState("pendente")
+    const [statusLista, setStatusLista] = useState("Agendadas")
 
     return (
         <Container>
 
             <Header />
 
-            <CalendarHome />
+            <CalendarHome setDataConsulta={setDataConsulta} />
 
             <FilterAppointment>
 
@@ -121,12 +152,23 @@ export const PatientConsultations = ({ navigation }) => {
                         statusLista == item.situacao.situacao && (
                             <AppointmentCard
                                 situacao={item.situacao.situacao}
-                                onPressCard={() => setShowQueryModal(item.situacao.situacao === "Agendadas" ? true : false)}
-                                onPressCancel={() => setShowModalCancel(true)}
+                                onPressCard={() => {
+                                    setShowQueryModal(item.situacao.situacao === "Agendadas" ? true : false),
+                                        setMedicoModal({
+                                            nome: item.medicoClinica.medico.idNavigation.nome,
+                                            crm: item.medicoClinica.medico.crm,
+                                            especialidade: item.medicoClinica.medico.especialidade.especialidade1,
+                                            clinica: item.medicoClinica.clinicaId
+                                        })
+                                }}
+                                onPressCancel={() => {
+                                    setShowModalCancel(true),
+                                        setConsultaCancel(prevState => ({ ...prevState, id: item.id }))
+                                }}
                                 onPressAppointment={() => setShowModalAppointment(true)}
                                 navigation={navigation}
                                 ProfileNameCard={item.medicoClinica.medico.idNavigation.nome}
-                                Age={dateFormatDbToView(item.dataConsulta)}
+                                Age={"CRM - " + item.medicoClinica.medico.crm}
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
                             />
                         )
@@ -135,6 +177,7 @@ export const PatientConsultations = ({ navigation }) => {
             />
 
             <BtnIcon onPress={() => setShowBookModal(true)}>
+
                 <FontAwesome6 name="stethoscope" size={24} color="white" />
             </BtnIcon>
 
@@ -151,6 +194,7 @@ export const PatientConsultations = ({ navigation }) => {
                 visible={showQueryModal}
                 setShowQueryModal={setShowQueryModal}
                 navigation={navigation}
+                medico={medicoModal}
             />
 
             {/* Modal cancelar */}
@@ -159,6 +203,7 @@ export const PatientConsultations = ({ navigation }) => {
                 visible={showModalCancel}
                 setShowModalCancel={setShowModalCancel}
                 navigation={navigation}
+                consultaCancel={consultaCancel}
 
             />
 

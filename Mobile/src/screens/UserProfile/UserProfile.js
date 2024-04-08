@@ -9,7 +9,7 @@ import { userDecodeToken } from "../../utils/Auth"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 
 
-export const UserProfile = ({navigation}) => {
+export const UserProfile = ({ navigation }) => {
     const [token, setToken] = useState({})
     async function ProfileLoad() {
         const token = await userDecodeToken()
@@ -85,9 +85,9 @@ export const UserProfile = ({navigation}) => {
                     <ButtonTitle>Editar</ButtonTitle>
                 </ButtonProfile>
 
-                <ButtonLogout onPress = {()=>{
+                <ButtonLogout onPress={() => {
                     AsyncStorage.clear(),
-                    navigation.replace("Login")
+                        navigation.replace("Login")
                 }}>
                     <ButtonTitle>Sair</ButtonTitle>
                 </ButtonLogout>

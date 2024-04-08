@@ -13,6 +13,7 @@ import { useEffect, useState, useRef } from "react";
 import { mapskey } from "../../utils/mapsKey";
 import api from "../../services/services";
 
+<<<<<<< HEAD
 export default function Map() {
   
   const mapReference = useRef(null)
@@ -23,6 +24,14 @@ export default function Map() {
   // para pegar a localização da clínica, irei precisar converter a localização em latitude e longitude
   // é mais simples pegar o cep e coverte-lo direto para long e lat
   const [finalPosition, setFinalPosition] = useState({ latitude: -23.550204, longitude: -46.311381 })
+=======
+export default function Map({ latitude, longitude, titleClinica }) {
+  const mapReference = useRef(null)
+
+  const [initialPosition, setInitialPosition] = useState(null);
+  // { latitude: -23.550204, longitude: -46.311381 }
+  const [finalPosition, setFinalPosition] = useState({ latitude: latitude, longitude: longitude })
+>>>>>>> GuilhermeCampos
 
   async function CapturarLocalizacao() {
     const { granted } = await requestForegroundPermissionsAsync();
@@ -30,9 +39,11 @@ export default function Map() {
     if (granted) {
       const currentPosition = await getCurrentPositionAsync();
 
-      await setInitialPosition(currentPosition);
+      setInitialPosition(currentPosition);
 
-      console.log(initialPosition);
+      // console.log(initialPosition);
+      // console.log(finalPosition.latitude);
+      // console.log(finalPosition.longitude);
     }
   }
 //Função de converter cep para longitude e latitude
@@ -65,7 +76,7 @@ export default function Map() {
         ],
         {
           edgePadding: { top: 60, right: 60, bottom: 60, left: 60 },
-          animated : true
+          animated: true
         }
       )
     }
@@ -90,7 +101,7 @@ export default function Map() {
     // })'
 
   }, [10000]);
-  
+
   useEffect(() => {
     RecarregarVisualizacaoMapa();
   }, [initialPosition]);
@@ -119,8 +130,8 @@ export default function Map() {
               latitude: initialPosition.coords.latitude,
               longitude: initialPosition.coords.longitude
             }}
-            title='SENAI INFO'
-            description='Aprendendo a marcar no mapa'
+            title='Meu Local'
+            description='você está aqui'
           />
           <Marker
 
@@ -130,17 +141,17 @@ export default function Map() {
               longitude: finalPosition.longitude
 
             }}
-            title='Suzano'
-            description='Aprendendo a marcar no mapa'
+            title={titleClinica}
+          // description='Aprendendo a marcar no mapa'
 
           />
 
           <MapViewDirections
             origin={initialPosition.coords}
             destination={{
-              latitude: -23.550204,
+              latitude: finalPosition.latitude,
 
-              longitude: -46.311381
+              longitude: finalPosition.longitude
 
             }}
             apikey={mapskey}
