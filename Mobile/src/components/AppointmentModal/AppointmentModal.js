@@ -16,23 +16,23 @@ export const AppointmentModal = ({
     paciente,
     ...rest
 }) => {
-    const [ano,setAno] = useState()
+    const [ano, setAno] = useState()
     const [idade, setIdade] = useState()
-    
-    
-   async function calcularData(ano){
-    setAno(
-        dateFormatDbToView(paciente.data).slice(-4)
-       
-    )
-    
-    return setIdade(new Date().getFullYear() - ano);
-   }
-   
-useEffect(()=>{
-calcularData(ano).then(response => console.log(idade))
 
-})
+
+    async function calcularData(ano) {
+        setAno(
+            dateFormatDbToView(paciente.data).slice(-4)
+
+        )
+
+        return setIdade(new Date().getFullYear() - ano);
+    }
+
+    useEffect(() => {
+        calcularData(ano)
+
+    })
     return (
         <Modal
             {...rest}
@@ -49,15 +49,15 @@ calcularData(ano).then(response => console.log(idade))
                     <AppointmentImageModal source={require('../../assets/appointmentmodal.png')} />
 
                     <Title>{paciente.nome}</Title>
-                   
+
                     <ContainerMedicalRecord>
-                        
+
                         <AppointmentModalText>{idade} anos</AppointmentModalText>
                         <AppointmentModalText>{paciente.email}</AppointmentModalText>
 
                     </ContainerMedicalRecord>
 
-                    <ButtonModal onPress={() => navigation.replace("MedicalRecord",{idPaciente: paciente.idPaciente, idade: idade})}>
+                    <ButtonModal onPress={() => navigation.replace("MedicalRecord", { idPaciente: paciente.idPaciente, idade: idade })}>
                         <ButtonTitle>Inserir Prontuário</ButtonTitle>
                     </ButtonModal>
 

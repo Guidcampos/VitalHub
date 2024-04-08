@@ -1,4 +1,5 @@
-﻿using WebAPI.Contexts;
+﻿using Microsoft.EntityFrameworkCore;
+using WebAPI.Contexts;
 using WebAPI.Domains;
 using WebAPI.Interfaces;
 using WebAPI.Utils;
@@ -58,7 +59,8 @@ namespace WebAPI.Repositories
 
         public Usuario BuscarPorId(Guid id)
         {
-            return ctx.Usuarios.FirstOrDefault(x => x.Id == id);
+            return ctx.Usuarios.FirstOrDefault(x => x.Id == id)!;
+            
         }
 
         public void Cadastrar(Usuario usuario)

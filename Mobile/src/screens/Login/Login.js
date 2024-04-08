@@ -12,15 +12,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ActivityIndicator } from "react-native"
 
 export const Login = ({ navigation }) => {
-    const [email, setEmail] = useState('medico@gmail.com')
-    const [senha, setSenha] = useState('medico123')
+    const [email, setEmail] = useState('gui@paciente.com')
+    const [senha, setSenha] = useState('gui123')
     const [loading, setLoading] = useState(false)
 
     async function handleLogin() {
         setLoading(true)
         // console.log(loading);
 
-        console.log('inicio')
         await api.post('/Login', {
             email: email,
             senha: senha
@@ -34,8 +33,8 @@ export const Login = ({ navigation }) => {
             console.log(error)
             setLoading(false)
         })
-        console.log('fim')
-        
+
+
     }
 
     return (

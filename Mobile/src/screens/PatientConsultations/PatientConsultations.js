@@ -29,12 +29,14 @@ export const PatientConsultations = ({ navigation }) => {
     const [profile, setProfile] = useState({})
     const [dataConsulta, setDataConsulta] = useState('')
 
+
+
     const [medicoModal, setMedicoModal] = useState({ nome: '', especialidade: '', crm: '', clinica: '' })
     //state para cancelar consulta
     const [consultaCancel, setConsultaCancel] = useState({
         id: '',
         //ID DE CONSULTAS CANCELAS, PEGAR NO BANCO -----------------------------
-        situacaoId: "A9DB357E-D66E-41EB-8A62-6A5A8F6C4FF3"
+        situacaoId: "DFCEBD4F-A79B-4989-8507-82DD6004B7E7"
     })
 
     async function ProfileLoad() {
@@ -45,6 +47,7 @@ export const PatientConsultations = ({ navigation }) => {
             // console.log(token);
             setProfile(token);
             setDataConsulta(moment().format('YYYY-MM-DD'))
+
         }
     }
 

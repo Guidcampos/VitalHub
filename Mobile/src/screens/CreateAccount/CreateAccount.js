@@ -12,7 +12,7 @@ export const CreateAccount = ({ navigation }) => {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [verificarSenha, setVerificarSenha] = useState('')
-    const [idTipoUsuario, setTipoUsuario] = useState('74A2CCB7-27C8-42D8-86BA-2880CD98EC7C')
+    const [idTipoUsuario, setTipoUsuario] = useState('775747A8-EC31-4288-B27E-BF43CE94812A')
 
     async function cadastrar(verificarSenha, senha) {
         if (email === "") {
