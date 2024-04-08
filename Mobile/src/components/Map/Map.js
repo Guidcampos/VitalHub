@@ -13,25 +13,12 @@ import { useEffect, useState, useRef } from "react";
 import { mapskey } from "../../utils/mapsKey";
 import api from "../../services/services";
 
-<<<<<<< HEAD
-export default function Map() {
-  
-  const mapReference = useRef(null)
-
-  const [initialPosition, setInitialPosition] = useState(null);
-  //api clínica
-  const [clinicaApi, setClinicaApi] = useState()
-  // para pegar a localização da clínica, irei precisar converter a localização em latitude e longitude
-  // é mais simples pegar o cep e coverte-lo direto para long e lat
-  const [finalPosition, setFinalPosition] = useState({ latitude: -23.550204, longitude: -46.311381 })
-=======
 export default function Map({ latitude, longitude, titleClinica }) {
   const mapReference = useRef(null)
 
   const [initialPosition, setInitialPosition] = useState(null);
   // { latitude: -23.550204, longitude: -46.311381 }
   const [finalPosition, setFinalPosition] = useState({ latitude: latitude, longitude: longitude })
->>>>>>> GuilhermeCampos
 
   async function CapturarLocalizacao() {
     const { granted } = await requestForegroundPermissionsAsync();
@@ -46,10 +33,10 @@ export default function Map({ latitude, longitude, titleClinica }) {
       // console.log(finalPosition.longitude);
     }
   }
-//Função de converter cep para longitude e latitude
+  //Função de converter cep para longitude e latitude
 
-// async function ConverterCep(params) {
-    
+  // async function ConverterCep(params) {
+
   //     try {
   //       const cep = ''; // Substitua com o CEP que deseja converter
   //       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${cep}&key=SUA_CHAVE_API`);
@@ -63,9 +50,9 @@ export default function Map({ latitude, longitude, titleClinica }) {
   //     } catch (error) {
   //       setError('Ocorreu um erro ao buscar as coordenadas. Por favor, tente novamente mais tarde.');
   //     }
-    
+
   // }
-//Função de pegar localização da clínica baseado no cep?
+  //Função de pegar localização da clínica baseado no cep?
 
   async function RecarregarVisualizacaoMapa() {
     if (mapReference.current && initialPosition) {

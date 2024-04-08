@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import React, { useEffect,useState } from 'react';
-=======
 import React, { useEffect, useState } from 'react';
->>>>>>> GuilhermeCampos
 import { SubtitleProfile, TitleProfile } from '../../components/Title/TitleStyle';
 import { BoxInput } from '../../components/BoxInput/BoxInput';
 import { Container, ContainerInput, ScrollViewLocation } from '../../components/Container/ContainerStyle';
@@ -12,12 +8,6 @@ import { LinkLocation } from '../../components/Links/Links';
 import Map from '../../components/Map/Map';
 import api from '../../services/services';
 
-<<<<<<< HEAD
-export const Location = ({navigation}) => {
-    
-   
-
-=======
 export const Location = ({ navigation, route }) => {
     const [clinica, setClinica] = useState(null)
 
@@ -39,7 +29,6 @@ export const Location = ({ navigation, route }) => {
                 console.log(error);
             })
     }
->>>>>>> GuilhermeCampos
     return (
         <Container>
             {clinica != null ? (
