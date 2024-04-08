@@ -12,63 +12,86 @@ import { userDecodeToken } from "../../utils/Auth"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import api from "../../services/services"
 import { dateFormatDbToView, functionPrioridade } from "../../utils/StringFunction"
+import moment from "moment/moment"
 
 export const MedicalConsultations = ({ navigation }) => {
 
     const [consultasApi, setConsultasApi] = useState([])
     const [profile, setProfile] = useState({})
+    const [dataConsulta, setDataConsulta] = useState('')
 
     // state para o estado da lista(card)
-    const [statusLista, setStatusLista] = useState("pendente")
+    const [statusLista, setStatusLista] = useState("Agendadas")
 
-    const Consultas = [
-        { id: 1, nome: "Vinicius", situacao: "pendente" },
-        { id: 2, nome: "Vinicius", situacao: "realizado" },
-        { id: 3, nome: "Vinicius", situacao: "cancelado" },
-        { id: 4, nome: "Vinicius", situacao: "realizado" },
-        { id: 5, nome: "Vinicius", situacao: "cancelado" }
-    ];
+    // const Consultas = [
+    //     { id: 1, nome: "Vinicius", situacao: "pendente" },
+    //     { id: 2, nome: "Vinicius", situacao: "realizado" },
+    //     { id: 3, nome: "Vinicius", situacao: "cancelado" },
+    //     { id: 4, nome: "Vinicius", situacao: "realizado" },
+    //     { id: 5, nome: "Vinicius", situacao: "cancelado" }
+    // ];
 
     // state para exibição dos modais 
     const [showModalCancel, setShowModalCancel] = useState(false)
     const [showModalAppointment, setShowModalAppointment] = useState(false)
-    const [pacienteModal, setPacienteModal] = useState({nome:'', email: '', data: '', idPaciente : ''})
-    
+    const [pacienteModal, setPacienteModal] = useState({ nome: '', email: '', data: '', idPaciente: '' })
+
 
     async function ProfileLoad() {
         const profile = await userDecodeToken()
 
         if (profile) {
-            console.log(profile)
+            // console.log(profile)
+            setProfile(profile);
+            setDataConsulta(moment().format('YYYY-MM-DD'))
         }
-        setProfile(profile);
 
     }
 
+    //listar por DATA no calendario
     async function GetConsultas() {
-        const token = JSON.parse(await AsyncStorage.getItem("token")).token
 
-        if (token) {
-
-            //Chamando o metodo da api
-            await api.get('/Consultas/ConsultasMedico', {
-                headers: { Authorization: `Bearer ${token}` }
-
-            }).then(async (response) => {
-                console.log(response.data);
-                setConsultasApi(response.data)
-
-            }).catch(error => {
-                console.log(error)
-            })
-        }
+        //Chamando o metodo da api
+        await api.get(`/Medicos/BuscarPorData?data=${dataConsulta}&id=${profile.id}`
+        ).then(response => {
+            setConsultasApi(response.data)
+        }).catch(error => {
+            console.log(error);
+        })
 
     }
+
+    //função para listar todas as consultas
+    // async function GetConsultas() {
+    //     const token = JSON.parse(await AsyncStorage.getItem("token")).token
+
+    //     if (token) {
+
+    //         //Chamando o metodo da api
+    //         await api.get('/Consultas/ConsultasMedico', {
+    //             headers: { Authorization: `Bearer ${token}` }
+
+    //         }).then(async (response) => {
+    //             // console.log(response.data)
+    //             setConsultasApi(response.data)
+
+    //         }).catch(error => {
+    //             console.log(error)
+    //         })
+    //     }
+
+    // }
 
     useEffect(() => {
-        GetConsultas();
         ProfileLoad();
     }, []);
+
+    //useEffect para esperar a DATA NO CALENDARIO
+    useEffect(() => {
+        if (dataConsulta != '') {
+            GetConsultas()
+        }
+    }, [dataConsulta, consultasApi])
 
 
 
@@ -78,7 +101,7 @@ export const MedicalConsultations = ({ navigation }) => {
 
             <Header />
 
-            <CalendarHome />
+            <CalendarHome setDataConsulta={setDataConsulta} />
 
             <FilterAppointment>
 
@@ -120,12 +143,12 @@ export const MedicalConsultations = ({ navigation }) => {
                                 onPressCancel={() => setShowModalCancel(true)}
                                 onPressAppointment={() => {
                                     setShowModalAppointment(true)
-                                    setPacienteModal({nome: item.paciente.idNavigation.nome, email: item.paciente.idNavigation.email, data: item.paciente.dataNascimento, idPaciente: item.pacienteId})
+                                    setPacienteModal({ nome: item.paciente.idNavigation.nome, email: item.paciente.idNavigation.email, data: item.paciente.dataNascimento, idPaciente: item.pacienteId })
                                 }
-                                    
-                                    }
+
+                                }
                                 ProfileNameCard={item.paciente.idNavigation.nome}
-                                Age={dateFormatDbToView(item.dataConsulta)}
+                                Age={(new Date().getFullYear() - dateFormatDbToView(item.paciente.dataNascimento).slice(-4)) + " anos"}
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
                                 profile={"Medico"}
                             />
@@ -148,7 +171,7 @@ export const MedicalConsultations = ({ navigation }) => {
                 visible={showModalAppointment}
                 setShowModalAppointment={setShowModalAppointment}
                 navigation={navigation}
-                paciente = {pacienteModal}
+                paciente={pacienteModal}
             />
 
 

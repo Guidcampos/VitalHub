@@ -33,7 +33,8 @@ export const PatientConsultations = ({ navigation }) => {
     //state para cancelar consulta
     const [consultaCancel, setConsultaCancel] = useState({
         id: '',
-        situacaoId: "DFCEBD4F-A79B-4989-8507-82DD6004B7E7"
+        //ID DE CONSULTAS CANCELAS, PEGAR NO BANCO -----------------------------
+        situacaoId: "A9DB357E-D66E-41EB-8A62-6A5A8F6C4FF3"
     })
 
     async function ProfileLoad() {
@@ -46,7 +47,7 @@ export const PatientConsultations = ({ navigation }) => {
             setDataConsulta(moment().format('YYYY-MM-DD'))
         }
     }
-   
+
     async function GetConsultas() {
 
         //Chamando o metodo da api
@@ -56,11 +57,6 @@ export const PatientConsultations = ({ navigation }) => {
         }).catch(error => {
             console.log(error);
         })
-
-    }
-    async function handlePress( rota ){
-        
-        navigation.replace(rota, {clinicaId: consultasApi.medicoClinica.clinicaId})
 
     }
 
