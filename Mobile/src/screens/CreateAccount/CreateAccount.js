@@ -38,6 +38,8 @@ export const CreateAccount = ({ navigation }) => {
             try {
                 await api.post("/Pacientes", {
                     email: email,
+                    nome: 'Sem nome',
+                    foto: '',
                     senha: senha,
                     idTipoUsuario: idTipoUsuario,
                 })
@@ -97,8 +99,8 @@ export const CreateAccount = ({ navigation }) => {
                 }
             />
 
-            <Button>
-                <ButtonTitle onPress={() => cadastrar(verificarSenha, senha)}>Cadastrar</ButtonTitle>
+            <Button onPress={() => cadastrar(verificarSenha, senha)}>
+                <ButtonTitle>Cadastrar</ButtonTitle>
             </Button>
 
             <LinkCode onPress={() => navigation.replace("Login")}>Cancelar</LinkCode>

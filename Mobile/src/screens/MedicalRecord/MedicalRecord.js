@@ -18,8 +18,20 @@ export const MedicalRecord = ({
     const [token,setToken] = useState({})
     const [pacienteApi, setPacienteApi] = useState(null)
    
-    
-    
+    const [descricao,setDescricao] = useState("")
+    const [diagnostico,setDiagnostico] = useState("")
+    const [prescricao, setPrescricao] = useState("")
+
+    async function ConsultaProntuario(){
+        //continuar aqui
+        await api.put("/Consultas/Prontuario",{id: route.params.idConsulta, descricao: descricao,diagnostico: diagnostico,receita:{medicamento: prescricao},})
+        .then(response => {
+            console.log("Atualizado com sucesso")
+        }).catch(error => {
+            console.log(error)
+        })
+
+    }
    
     async function LoadMedicalRecord(){
         const token = await userDecodeToken()
@@ -79,6 +91,8 @@ export const MedicalRecord = ({
                     placeholder='Descrição'
                     keyType='text'
                     placeholderTextColor={'#34898F'}
+                    fieldValue={descricao}
+                    onChangeText={(txt)=>{setDescricao(txt)}}
                 />
 
                 <BoxInputMedical
@@ -86,6 +100,8 @@ export const MedicalRecord = ({
                     placeholder='Diagnóstico'
                     keyType='text'
                     placeholderTextColor={'#34898F'}
+                    fieldValue={diagnostico}
+                    onChangeText={(txt) => {setDiagnostico(txt)}}
                 />
 
 
@@ -94,9 +110,15 @@ export const MedicalRecord = ({
                     placeholder='Prescrição médica'
                     keyType='text'
                     placeholderTextColor={'#34898F'}
+                    fieldValue={prescricao}
+                    onChangeText={(txt)=> {setPrescricao(txt)}}
                 />
 
-                <Button onPress = {() => navigation.replace("Main")}>
+                {/* <Button onPress = {() => navigation.replace("Main")}> */}
+                <Button onPress = {() => {
+                    console.log(route.params.idConsulta)
+                    ConsultaProntuario()
+                    }}>
                     <ButtonTitle>Salvar</ButtonTitle>
                 </Button>
 

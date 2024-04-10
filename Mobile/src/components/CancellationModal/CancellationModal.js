@@ -7,6 +7,7 @@ import { handleCallNotifications } from "../Notifications/Notifications"
 import api from "../../services/services"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { useState } from "react"
+import { userDecodeToken } from "../../utils/Auth"
 
 export const CancellationModal = ({
     visible,
@@ -19,8 +20,7 @@ export const CancellationModal = ({
     const [loading, setLoading] = useState(false)
     async function CancelarConsulta() {
         setLoading(true)
-
-
+        
         //Chamando o metodo da api
         await api.put(`/Consultas/Status`,
 

@@ -34,7 +34,7 @@ export const PatientConsultations = ({ navigation }) => {
     const [consultaCancel, setConsultaCancel] = useState({
         id: '',
         //ID DE CONSULTAS CANCELAS, PEGAR NO BANCO -----------------------------
-        situacaoId: "A9DB357E-D66E-41EB-8A62-6A5A8F6C4FF3"
+        situacaoId: "33879A48-7528-46FF-87A7-AB6CC5F99A14"
     })
 
     async function ProfileLoad() {

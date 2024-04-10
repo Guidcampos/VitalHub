@@ -35,17 +35,27 @@ export const MedicalConsultations = ({ navigation }) => {
     const [showModalCancel, setShowModalCancel] = useState(false)
     const [showModalAppointment, setShowModalAppointment] = useState(false)
     const [pacienteModal, setPacienteModal] = useState({ nome: '', email: '', data: '', idPaciente: '' })
+    const [consultaCancel, setConsultaCancel] = useState({
+        id: '',
+        //ID DE CONSULTAS CANCELAS, PEGAR NO BANCO -----------------------------
+        situacaoId: "33879A48-7528-46FF-87A7-AB6CC5F99A14"
+    })
 
+    //Atualizar Prontuário
+    
+    
+    const [idConsulta, setIdConsulta] = useState("")
+    
 
     async function ProfileLoad() {
         const profile = await userDecodeToken()
-
+        
         if (profile) {
             // console.log(profile)
             setProfile(profile);
             setDataConsulta(moment().format('YYYY-MM-DD'))
         }
-
+        
     }
 
     //listar por DATA no calendario
@@ -60,7 +70,7 @@ export const MedicalConsultations = ({ navigation }) => {
         })
 
     }
-
+    
     //função para listar todas as consultas
     // async function GetConsultas() {
     //     const token = JSON.parse(await AsyncStorage.getItem("token")).token
@@ -91,7 +101,7 @@ export const MedicalConsultations = ({ navigation }) => {
         if (dataConsulta != '') {
             GetConsultas()
         }
-    }, [dataConsulta, consultasApi])
+    }, [dataConsulta,showModalCancel])
 
 
 
@@ -140,10 +150,14 @@ export const MedicalConsultations = ({ navigation }) => {
                         statusLista == item.situacao.situacao && (
                             <AppointmentCard
                                 situacao={item.situacao.situacao}
-                                onPressCancel={() => setShowModalCancel(true)}
+                                onPressCancel={() => {
+                                    setShowModalCancel(true)
+                                    setConsultaCancel(prevState =>({...prevState,id: item.id}))
+                                }}
                                 onPressAppointment={() => {
                                     setShowModalAppointment(true)
                                     setPacienteModal({ nome: item.paciente.idNavigation.nome, email: item.paciente.idNavigation.email, data: item.paciente.dataNascimento, idPaciente: item.pacienteId })
+                                    setIdConsulta(item.id)
                                 }
 
                                 }
@@ -151,6 +165,7 @@ export const MedicalConsultations = ({ navigation }) => {
                                 Age={(new Date().getFullYear() - dateFormatDbToView(item.paciente.dataNascimento).slice(-4)) + " anos"}
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
                                 profile={"Medico"}
+                                idConsultaProntuario = {item.id}
                             />
                         )
                 }
@@ -162,6 +177,8 @@ export const MedicalConsultations = ({ navigation }) => {
             <CancellationModal
                 visible={showModalCancel}
                 setShowModalCancel={setShowModalCancel}
+                consultaCancel={consultaCancel}
+                navigation={navigation}
 
             />
 
@@ -172,6 +189,8 @@ export const MedicalConsultations = ({ navigation }) => {
                 setShowModalAppointment={setShowModalAppointment}
                 navigation={navigation}
                 paciente={pacienteModal}
+                idConsulta={idConsulta}
+                
             />
 
 

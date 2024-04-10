@@ -13,7 +13,9 @@ export const AppointmentModal = ({
     visible,
     navigation,
     setShowModalAppointment,
+    idConsultaProntuario = "",
     paciente,
+    idConsulta,
     ...rest
 }) => {
     const [ano,setAno] = useState()
@@ -57,7 +59,7 @@ calcularData(ano).then(response => console.log(idade))
 
                     </ContainerMedicalRecord>
 
-                    <ButtonModal onPress={() => navigation.replace("MedicalRecord",{idPaciente: paciente.idPaciente, idade: idade})}>
+                    <ButtonModal onPress={() => navigation.replace("MedicalRecord",{idPaciente: paciente.idPaciente, idade: idade, idConsulta: idConsulta })}>
                         <ButtonTitle>Inserir Prontuário</ButtonTitle>
                     </ButtonModal>
 
