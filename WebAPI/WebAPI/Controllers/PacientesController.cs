@@ -94,10 +94,11 @@ namespace WebAPI.Controllers
 
 
                 //Define o nome do container do blob
-                var containerName = "containervitalhubeduardo";
+                var containerName = "containervitalhub";
 
                 //Define a string de conexão
-                var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubeduardo;AccountKey=0V2agf4QnvdhFjdojrXZ3IszX8g4+fB2XA7pIRMc21JEJmwe+byBbiLXqopg5jOzybHvcQduXrUI+ASteDCgwg==;EndpointSuffix=core.windows.net";
+                var connectionString = "DefaultEndpointsProtocol=https;AccountName=blobvitalhubg13campos;AccountKey=ZKyz2O9XhP30ShdvKE8dsvNaPcRJUL3GM1gUFrbXuauaFG4ppW2SRgI7UfP7FfBRpjeh69fe11MM+ASt7FIpQw==;EndpointSuffix=core.windows.net";
+
 
 
                 //Aqui vamos chamar o método para upload da image
