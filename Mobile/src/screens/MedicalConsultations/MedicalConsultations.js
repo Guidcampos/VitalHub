@@ -166,6 +166,7 @@ export const MedicalConsultations = ({ navigation }) => {
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
                                 profile={"Medico"}
                                 idConsultaProntuario = {item.id}
+                                
                             />
                         )
                 }

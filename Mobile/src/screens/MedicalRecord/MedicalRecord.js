@@ -24,7 +24,7 @@ export const MedicalRecord = ({
 
     async function ConsultaProntuario(){
         //continuar aqui
-        await api.put("/Consultas/Prontuario",{id: route.params.idConsulta, descricao: descricao,diagnostico: diagnostico,receita:{medicamento: prescricao},})
+        await api.put("/Consultas/Prontuario",{consultaId: route.params.idConsulta, medicamento: prescricao, descricao: descricao, diagnostico: diagnostico})
         .then(response => {
             console.log("Atualizado com sucesso")
         }).catch(error => {
@@ -116,8 +116,9 @@ export const MedicalRecord = ({
 
                 {/* <Button onPress = {() => navigation.replace("Main")}> */}
                 <Button onPress = {() => {
-                    console.log(route.params.idConsulta)
+                    
                     ConsultaProntuario()
+                    
                     }}>
                     <ButtonTitle>Salvar</ButtonTitle>
                 </Button>
