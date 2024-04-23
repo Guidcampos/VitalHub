@@ -2,20 +2,37 @@ import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-na
 import { Camera, CameraType } from 'expo-camera';
 import { useEffect, useState, useRef } from 'react';
 import { FontAwesome, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
+import * as MediaLibrary from 'expo-media-library'
 
-export const CameraModal = ({ visible, setUriCameraCapture, setShowCameraModel = false }) => {
+export const CameraModal = ({ visible, setUriCameraCapture, setShowCameraModel = false, getMediaLibrary = false }) => {
 
     const cameraRef = useRef(null)
     const [photo, setPhoto] = useState(null)
     const [openModal, setOpenModal] = useState(false)
     const [tipoCamera, setTipoCamera] = useState(CameraType.front)
+    const [lastPhoto,setLastPhoto] = useState(null)
+
+    async function GetLastestPhoto(){
+        console.log("teste")
+        // const assets = await MediaLibrary.getAssetsAsync({sortBy: [[MediaLibrary.SortBy.creationTime]],first: 1})
+        const assets = await MediaLibrary.getAssetsAsync()
+        if(assets.length > 0)
+        {
+            setLastPhoto(assets[0].uri)
+        }
+        console.log(assets);
+    }
 
     useEffect(() => {
         (async () => {
             const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync()
         })();
-    }, [])
 
+        if(getMediaLibrary){
+            GetLastestPhoto()
+        }
+    }, [])
+    
     async function CapturePhoto() {
         if (cameraRef) {
             const response = await cameraRef.current.takePictureAsync()

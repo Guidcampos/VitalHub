@@ -9,11 +9,21 @@ import { userDecodeToken } from "../../utils/Auth"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import api from "../../services/services"
 import { dateFormatDbToView } from "../../utils/StringFunction"
+import {MaterialCommunityIcons} from '@expo/vector-icons'
+import { ButtonCamera } from "./StyleUserProfile"
+import { View } from "react-native"
+import { CameraModal } from "../../components/CameraModal/CameraModal"
 
+import * as MediaLibrary from 'expo-media-library'
+import * as ImagePicker from 'expo-image-picker'
 
 export const UserProfile = ({ navigation }) => {
     const [token, setToken] = useState({})
     const [usuario, setUsuario] = useState(null)
+
+    const [showCameraModel, setShowCameraModel] = useState(false)
+    const [uriCameraCapture, setUriCameraCapture] = useState(null)
+
 
     async function ProfileLoad() {
         const token = await userDecodeToken()
@@ -38,22 +48,42 @@ export const UserProfile = ({ navigation }) => {
 
     }
 
+    async function requestGaleria(){
+        await MediaLibrary.requestPermissionsAsync();
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      }
+    
+    useEffect(()=>{
+        //verificar se tem necessidade de mostrar
+        
+        requestGaleria();
+    },[])
+
     useEffect(() => {
-
         ProfileLoad()
-
     }, [])
     return (
         <ScrollProfile>
             <Container>
-
+            <View style = {{width:"100%",position:'relative'}}>
                 <UserImage
                     source={require('../../assets/ProfileImage.png')}
                 />
+                
+                <ButtonCamera onPress = {() => {setShowCameraModel(true)}
+                
+
+                    
+                }>
+                <MaterialCommunityIcons name = "camera-plus" size={20} color={'white'}/>
+                </ButtonCamera>
+                </View>
+                
+                
 
                 <TitleProfile>{token.name}</TitleProfile>
-
                 <SubtitleProfile>{token.email}</SubtitleProfile>
+                
                 {token.name != " " ? (
                     usuario != null ?
                         <>
@@ -67,7 +97,7 @@ export const UserProfile = ({ navigation }) => {
 
                                 />
                                 : null}
-
+                                
                             <BoxInput
                                 textLabel={token.role === 'Paciente' ? 'CPF' : 'CRM'}
                                 placeholder='*********-**'
@@ -79,7 +109,7 @@ export const UserProfile = ({ navigation }) => {
                                     `${usuario.crm.slice(0, 10)}-${usuario.crm.slice(-1)}`
                                 }
                                 maxLength={15}
-                                onChangeText={(txt)=> {}}
+                                
                             />
 
                             <BoxInput
@@ -133,6 +163,8 @@ export const UserProfile = ({ navigation }) => {
                 <StatusBar barStyle='dark-content' translucent backgroundColor='transparent' />
 
             </Container>
+
+            <CameraModal  getMediaLibrary={true} visible={showCameraModel} setShowCameraModel={setShowCameraModel} setUriCameraCapture={setUriCameraCapture} />
         </ScrollProfile>
     )
 }
