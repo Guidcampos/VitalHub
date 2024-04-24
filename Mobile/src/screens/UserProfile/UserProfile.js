@@ -22,8 +22,23 @@ export const UserProfile = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null)
 
     const [showCameraModel, setShowCameraModel] = useState(false)
-    const [uriCameraCapture, setUriCameraCapture] = useState(null)
+    const [uriCameraCapture, setUriCameraCapture] = useState("")
+    const formData = new FormData();
+    formData.append("Arquivo",{
+        uri: uriCameraCapture,
+        name: `image.${uriCameraCapture.split(".")[1]}`,
+        type: `image.${uriCameraCapture.split(".")[1]}`
+    });
 
+    async function AlterarFotoPerfil(){
+        await api.put(`/Usuario/AlterarFotoPerfil?id=${token.id}`,formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }).then(response => {console.log(response)}).
+        catch(error => {console.log(error)})
+
+    }
 
     async function ProfileLoad() {
         const token = await userDecodeToken()
@@ -53,15 +68,19 @@ export const UserProfile = ({ navigation }) => {
         await ImagePicker.requestMediaLibraryPermissionsAsync();
       }
     
-    useEffect(()=>{
-        //verificar se tem necessidade de mostrar
-        
-        requestGaleria();
-    },[])
+    
 
     useEffect(() => {
-        ProfileLoad()
+        ProfileLoad();
+        requestGaleria();
     }, [])
+
+    useEffect(()=>{
+       if(uriCameraCapture !== null){
+        AlterarFotoPerfil();
+       }
+    },[uriCameraCapture])
+
     return (
         <ScrollProfile>
             <Container>
@@ -71,9 +90,7 @@ export const UserProfile = ({ navigation }) => {
                 />
                 
                 <ButtonCamera onPress = {() => {setShowCameraModel(true)}
-                
-
-                    
+            
                 }>
                 <MaterialCommunityIcons name = "camera-plus" size={20} color={'white'}/>
                 </ButtonCamera>
@@ -146,7 +163,7 @@ export const UserProfile = ({ navigation }) => {
 
 
                 <Button>
-                    <ButtonTitle onPress={() => console.log(usuario)}>Salvar</ButtonTitle>
+                    <ButtonTitle onPress={() => AlterarFotoPerfil()}>Salvar</ButtonTitle>
                 </Button>
 
                 <ButtonProfile>
