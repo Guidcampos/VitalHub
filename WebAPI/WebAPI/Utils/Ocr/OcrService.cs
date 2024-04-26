@@ -6,7 +6,7 @@ namespace WebAPI.Utils.Ocr
     public class OcrService
     {
         //colocar key do computer vision do portal azure
-        private readonly string _subscriptKey = "bea890619294458ca8a572a68afdf551";
+        private readonly string _subscriptKey = "7e538fa65b724c49b90192e94d3a3a87";
 
         private readonly string _endpoint = "https://cvvitalhubcampos.cognitiveservices.azure.com/";
 

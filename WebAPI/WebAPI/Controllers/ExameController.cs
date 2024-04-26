@@ -20,7 +20,7 @@ namespace WebAPI.Controllers
             _ocrService = ocrService;
         }
 
-        [HttpPost("Cadastrar ")]
+        [HttpPost("Cadastrar")]
 
         public async Task<IActionResult> Post([FromForm] ExameViewModel exameViewModel)
         {
