@@ -122,7 +122,7 @@ export const MedicalRecord = ({
                                 placeholder='Descrição'
                                 editable={editar}
                                 keyType='text'
-                                placeholderTextColor={'#34898F'}
+                                placeholderTextColor={editar ? '#34898F' : '#4E4B59'}
                                 multiline={true}
                                 onChangeText={(txt) => setConsultaAtt({ ...consultaAtt, descricao: txt })}
                                 fieldValue={consultaAtt.descricao}
@@ -133,7 +133,7 @@ export const MedicalRecord = ({
                                 placeholder='Diagnóstico'
                                 editable={editar}
                                 keyType='text'
-                                placeholderTextColor={editar ? '#34898F' : 'black'}
+                                placeholderTextColor={editar ? '#34898F' : '#4E4B59'}
                                 multiline={true}
                                 onChangeText={(txt) => setConsultaAtt({ ...consultaAtt, diagnostico: txt })}
                                 fieldValue={consultaAtt.diagnostico}
@@ -145,7 +145,7 @@ export const MedicalRecord = ({
                                 placeholder='Prescrição médica'
                                 editable={editar}
                                 keyType='text'
-                                placeholderTextColor={'#34898F'}
+                                placeholderTextColor={editar ? '#34898F' : '#4E4B59'}
                                 multiline={true}
                                 onChangeText={(txt) => setConsultaAtt({ ...consultaAtt, medicamento: txt })}
                                 fieldValue={consultaAtt.medicamento}

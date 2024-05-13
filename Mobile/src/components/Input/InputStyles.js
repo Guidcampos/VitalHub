@@ -41,7 +41,7 @@ margin-bottom: 20px;
 `
 
 export const InputBoxMedicalRecord = styled(InputBox)`
-
+border: ${props => !props.editable ? "none" : "2px solid #49B3BA"};
 /* text-align: start; */
 padding: 10px;
 height: 121px;

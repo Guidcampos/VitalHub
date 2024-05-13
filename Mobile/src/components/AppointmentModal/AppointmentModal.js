@@ -13,6 +13,7 @@ export const AppointmentModal = ({
     visible,
     navigation,
     setShowModalAppointment,
+    consultaRealizada,
     paciente,
     ...rest
 }) => {
@@ -28,6 +29,10 @@ export const AppointmentModal = ({
 
         return setIdade(new Date().getFullYear() - ano);
     }
+
+    // async function handleRealizadas () {
+
+    // }
 
     useEffect(() => {
         calcularData(ano)
@@ -58,7 +63,15 @@ export const AppointmentModal = ({
                     </ContainerMedicalRecord>
 
                     <ButtonModal onPress={() => navigation.replace("MedicalRecord", { idPaciente: paciente.idPaciente, idade: idade, foto: paciente.foto, consultaId: paciente.consultaId })}>
-                        <ButtonTitle>Inserir Prontuário</ButtonTitle>
+
+                        {consultaRealizada.situacao === "Agendadas" ?
+                            <ButtonTitle>Confirmar Consulta</ButtonTitle> :
+
+                            consultaRealizada.situacao === "Realizadas" ?
+                                <ButtonTitle>Inserir Prontuário</ButtonTitle> :
+
+                                <ButtonTitle>Cancelada</ButtonTitle>
+                        }
                     </ButtonModal>
 
                     {/* <ButtonSecondary>
@@ -66,6 +79,7 @@ export const AppointmentModal = ({
                     </ButtonSecondary> */}
 
                     <LinkCodeModal onPress={() => setShowModalAppointment(false)}>Cancelar</LinkCodeModal>
+
 
                 </AppointmentModalContent>
 

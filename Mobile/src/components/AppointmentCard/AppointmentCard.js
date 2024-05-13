@@ -2,6 +2,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { ButtonCard, ButtonTextCard, ClockCard, ContainerCardList, ContainerCardListClinic, ContainerDate, ContainerRate, ContainerRateTime, ContentCard, ContentMedCard, DataClinicCard, DataProfileCard, HourText, ProfileData, ProfileImage, ProfileName, RateText, TextAge, TextBold, TextBoldClinic, ViewRow } from './AppointmentCardStyles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useState } from 'react';
+import moment from 'moment';
 
 
 
@@ -12,6 +13,7 @@ export const AppointmentCard = ({
     idConsultaProntuario = '',
     ProfileNameCard,
     Age,
+    hora,
     TipoConsulta,
     foto,
     navigation,
@@ -42,7 +44,7 @@ export const AppointmentCard = ({
 
                     <ClockCard situacao={situacao}>
                         <AntDesign name="clockcircle" size={14} color={situacao == "Agendadas" ? "#49B3BA" : "#8C8A97"} />
-                        <TextBold situacao={situacao} color={"#49b3baq"}>14:00</TextBold>
+                        <TextBold situacao={situacao} color={"#49b3baq"}>{moment(hora).format("HH:mm")}</TextBold>
                     </ClockCard>
 
                     {

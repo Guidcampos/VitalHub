@@ -1,4 +1,4 @@
-import { Modal } from "react-native"
+import { Alert, Modal } from "react-native"
 import { LinkCodeModal } from "../Links/Links"
 import { Button, ButtonModal } from "../Button/ButtonStyle"
 import { ButtonTitle, LabelButtonModal, Title } from "../Title/TitleStyle"
@@ -20,8 +20,10 @@ export const BookModal = ({
 
 
     async function handleContinue() {
-        await setShowBookModal(false)
-        navigation.replace("SelectClinic", { agendamento: agendamento })
+        if (agendamento.prioridadeId && agendamento.localizacao) {
+            await setShowBookModal(false)
+            navigation.replace("SelectClinic", { agendamento: agendamento })
+        }
     }
     return (
         <Modal

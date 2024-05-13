@@ -176,7 +176,7 @@ export const PatientConsultations = ({ navigation }) => {
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
                                 idConsultaProntuario={item.id}
                                 foto={item.medicoClinica.medico.idNavigation.foto}
-
+                                hora={item.dataConsulta}
                             />
                         )
                 }

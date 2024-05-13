@@ -39,6 +39,7 @@ export const UserProfile = ({ navigation }) => {
     const [verificadoCPF, setVerificadoCPF] = useState(true)
     const [verificadoCRM, setVerificadoCRM] = useState(true)
     const [verificadoRG, setVerificadoRG] = useState(true)
+    const [verificadoNascimento, setVerificadoNascimento] = useState(true)
 
     //states para update
     const [usuarioATT, setUsuarioATT] = useState({
@@ -79,6 +80,7 @@ export const UserProfile = ({ navigation }) => {
         }
     };
     const verificaRG = () => {
+
         if (usuarioATT.rg.length < 9) {
             Alert.alert('Aviso', 'O RG deve ter mais que 9 dígitos.')
             setVerificadoRG(false)
@@ -86,6 +88,18 @@ export const UserProfile = ({ navigation }) => {
             setVerificadoRG(true)
         }
     };
+    const verificaNascimento = () => {
+
+        if (!usuarioATT.nascimento) {
+            setVerificadoNascimento(false)
+        } else if (usuarioATT.nascimento.length === 10) {
+            setVerificadoNascimento(true)
+        } else {
+            setVerificadoNascimento(false)
+            Alert.alert('Aviso', 'Por favor preencha uma data valida \n DD/MM/YYYY')
+        }
+    };
+
 
 
     const handleNascimento = (text) => {
@@ -151,7 +165,7 @@ export const UserProfile = ({ navigation }) => {
         } catch (error) {
             console.error("Erro ao atualizar os dados do usuário:", error);
             setLoading(false)
-            setEditar(false)
+            setEditar(true)
         }
     }
 
@@ -204,7 +218,9 @@ export const UserProfile = ({ navigation }) => {
 
                 if (!usuarioATT.nascimento) {
                     setPrimeiroAcesso(true)
+                    setVerificadoNascimento(false)
                 }
+
 
 
             }).catch(error => {
@@ -334,8 +350,9 @@ export const UserProfile = ({ navigation }) => {
                                     textLabel='Data de Nascimento'
                                     placeholder='dd/mm/aaaa'
                                     editable={editar}
+                                    onBlur={verificaNascimento}
+                                    verificado={verificadoNascimento}
                                     keyType='numeric'
-
                                     fieldValue={
                                         primeiroAcesso ? usuarioATT.nascimento :
                                             usuarioATT.nascimento.includes("-") ?
@@ -445,8 +462,6 @@ export const UserProfile = ({ navigation }) => {
                     verificadoCEP && verificadoCPF && verificadoCRM && verificadoRG ? updateProfile() :
 
                         Alert.alert("DADOS INCORRETOS", "Preencha corretamente os campos em destaque")
-
-
 
                     : setEditar(true)}>
                     {editar ?

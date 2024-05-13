@@ -17,14 +17,15 @@ export const SelectDate = ({ navigation, route }) => {
     const [horaSelecionada, setHoraSelecionada] = useState("")
 
     function handleContinue() {
+        if (dataSelecionada && horaSelecionada) {
+            setAgendamento({
+                ...route.params.agendamento,
 
-        setAgendamento({
-            ...route.params.agendamento,
+                dataConsulta: `${dataSelecionada} ${horaSelecionada}`,
+            });
 
-            dataConsulta: `${dataSelecionada} ${horaSelecionada}`,
-        });
-
-        setShowConfirmModal(true)
+            setShowConfirmModal(true)
+        }
     }
 
     useEffect(() => {

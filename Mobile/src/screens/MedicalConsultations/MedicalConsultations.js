@@ -40,6 +40,10 @@ export const MedicalConsultations = ({ navigation }) => {
         //ID DE CONSULTAS CANCELAS, PEGAR NO BANCO -----------------------------
         situacao: "Canceladas"
     })
+    const [consultaRealizada, setConsultaRealizada] = useState({
+        id: '',
+        situacao: ""
+    })
 
 
 
@@ -151,6 +155,26 @@ export const MedicalConsultations = ({ navigation }) => {
                                         setConsultaCancel(prevState => ({ ...prevState, id: item.id }))
                                 }}
 
+                                onPressCard={() => {
+                                    if (item.situacao.situacao !== "Canceladas") {
+
+
+                                        setShowModalAppointment(true)
+                                        setPacienteModal({
+                                            nome: item.paciente.idNavigation.nome,
+                                            email: item.paciente.idNavigation.email,
+                                            data: item.paciente.dataNascimento,
+                                            idPaciente: item.pacienteId,
+                                            foto: item.paciente.idNavigation.foto,
+                                            consultaId: item.id
+                                        })
+                                        setConsultaRealizada({
+                                            id: item.id,
+                                            situacao: item.situacao.situacao
+                                        })
+                                    }
+                                }
+                                }
 
                                 onPressAppointment={() => {
                                     setShowModalAppointment(true)
@@ -163,6 +187,7 @@ export const MedicalConsultations = ({ navigation }) => {
                                         consultaId: item.id
                                     })
 
+
                                 }
 
                                 }
@@ -171,6 +196,7 @@ export const MedicalConsultations = ({ navigation }) => {
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
                                 profile={"Medico"}
                                 foto={item.paciente.idNavigation.foto}
+                                hora={item.dataConsulta}
                             />
                         )
                 }
@@ -193,6 +219,7 @@ export const MedicalConsultations = ({ navigation }) => {
                 setShowModalAppointment={setShowModalAppointment}
                 navigation={navigation}
                 paciente={pacienteModal}
+                consultaRealizada={consultaRealizada}
 
             />
 

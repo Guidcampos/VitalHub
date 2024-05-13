@@ -23,7 +23,9 @@ export const CameraModal = ({ visible, setUriCameraCapture, setShowCameraModel =
         // const { assets } = await MediaLibrary.getAssetsAsync();
 
         if (assets.length > 0) {
-            setLastPhoto(assets[0].uri)
+            const infoAssets = await MediaLibrary.getAssetInfoAsync(assets[0].id)
+            // setLastPhoto(assets[0].uri)
+            setLastPhoto(infoAssets.localUri)
         }
         // console.log(assets);
     }

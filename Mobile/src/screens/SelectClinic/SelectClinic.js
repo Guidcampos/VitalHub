@@ -23,12 +23,14 @@ export const SelectClinic = ({ navigation, route }) => {
 
 
     async function handleContinue() {
-        navigation.replace("SelectMed", {
-            agendamento: {
-                ...route.params.agendamento,
-                ...clinicaCard
-            }
-        })
+        if (clinicaCard.clinicaId) {
+            navigation.replace("SelectMed", {
+                agendamento: {
+                    ...route.params.agendamento,
+                    ...clinicaCard
+                }
+            })
+        }
     }
 
 

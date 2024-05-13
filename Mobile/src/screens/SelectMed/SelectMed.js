@@ -38,12 +38,14 @@ export const SelectMed = ({ navigation, route }) => {
     }
 
     async function handleContinue() {
-        navigation.replace("SelectDate", {
-            agendamento: {
-                ...route.params.agendamento,
-                ...medico
-            }
-        })
+        if (medico.medicoClinicaId) {
+            navigation.replace("SelectDate", {
+                agendamento: {
+                    ...route.params.agendamento,
+                    ...medico
+                }
+            })
+        }
     }
 
     useEffect(() => {

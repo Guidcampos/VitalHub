@@ -32,7 +32,8 @@ export const Login = ({ navigation }) => {
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
             const token = await userDecodeToken()
             setLoading(false)
-            token.name != '...' ? navigation.navigate("Main") : navigation.navigate("UserProfile")
+            // token.name != '...' ? navigation.navigate("Main") : navigation.navigate("UserProfile")
+            navigation.navigate("Main")
 
         }).catch(error => {
             console.log(error)
