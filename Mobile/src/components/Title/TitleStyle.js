@@ -51,7 +51,8 @@ export const SubtitleMedicalRecord = styled(Subtitle)`
 margin-bottom: 25px;
 `
 export const BabyBlueButtonText = styled(ButtonTitle)`
-    color: #34898F;
+    /* color: #34898F; */
+    color: ${props => props.selected ? "#fbfbfb" : "#34898F"};
     text-transform: capitalize;
     font-size: 16px;
     font-family: MontserratAlternates_600SemiBold;

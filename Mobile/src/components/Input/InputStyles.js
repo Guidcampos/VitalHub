@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
 export const InputBox = styled.TextInput`
-    border: 2px solid #49B3BA;
+    border: ${props => !props.editable ? "none" : (!props.verificado) ? "2px solid red" : "2px solid #49B3BA"};
     align-items: left;
     justify-content: center;
+    ${props => props.editable ? "" : "background-color: #F5F3F3"};
     padding: 16px;
     border-radius: 5px;
-    color: #34898F;
+    color:  ${props => props.editable ? "#34898F" : "#4E4B59"};
     font-size: 14px;
     font-family: MontserratAlternates_600SemiBold;
     width: 90%;
@@ -24,13 +25,15 @@ export const InputCheckEmail = styled(InputBox)`
 `
 
 export const InputProfileBox = styled.TextInput`
-border: 1px solid #F5F3F3;
+/* border: 1px solid #F5F3F3; */
+border: ${props => !props.editable ? "none" : (!props.verificado) ? "2px solid red" : "2px solid #49B3BA"};
 width: 90%;
 align-items: left;
 justify-content: center;
 padding: 16px;
-background-color: #F5F3F3;
-color: #33303E;
+${props => props.editable ? "" : "background-color: #F5F3F3"};
+/* color: #33303E; */
+color:  ${props => props.editable ? "#34898F" : " #33303E"};
 font-size: 14px;
 font-family: MontserratAlternates_500Medium;
 border-radius: 5px;
@@ -67,14 +70,14 @@ height: 121px;
 align-items: left;
 justify-content: center;
 padding: 16px;
-/* background-color: #F5F3F3; */
-color: #4E4B59;
+${props => props.editable ? "" : "background-color: #F5F3F3"};
+color:  ${props => props.editable ? "#34898F" : "#4E4B59"};
 font-size: 14px;
 font-family: MontserratAlternates_500Medium;
 border-radius: 5px;
 margin-bottom: 20px;
 text-align: start;
-border: 2px solid #49B3BA;
+border: ${props => props.editable ? "2px solid #49B3BA" : "none"};
 `
 export const InputPrescriptionViewBox = styled(InputViewPrescriptionBox)`
 height: 53px;

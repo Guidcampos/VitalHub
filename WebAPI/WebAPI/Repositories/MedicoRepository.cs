@@ -19,6 +19,7 @@ namespace WebAPI.Repositories
             {
                 Medico medicoBuscado = ctx.Medicos
                     .Include(x => x.Endereco)
+                    .Include(x => x.IdNavigation)
                     .FirstOrDefault(x => x.Id == Id)!;
 
 
@@ -32,6 +33,9 @@ namespace WebAPI.Repositories
 
                 if (medico.Crm != null)
                     medicoBuscado.Crm = medico.Crm;
+
+                if (medico.Nome != null)
+                    medicoBuscado.IdNavigation!.Nome = medico.Nome;
 
                 if (medico.Logradouro != null)
                     medicoBuscado.Endereco!.Logradouro = medico.Logradouro;

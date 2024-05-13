@@ -4,8 +4,34 @@ import { Logo } from "../../components/Logo/LogoStyle";
 import { ButtonTitle, Subtitle, Title } from "../../components/Title/TitleStyle";
 import { Input } from "../../components/Input/Input";
 import { Button } from "../../components/Button/ButtonStyle";
+import { useState } from "react";
+import { ActivityIndicator } from "react-native";
+import api from "../../services/services";
 
-export const RedefinePassword = ({navigation}) => {
+export const RedefinePassword = ({ navigation, route }) => {
+    const [loading, setLoading] = useState(false)
+    const [senha, setSenha] = useState("")
+    const [confirmarSenha, setConfirmarSenha] = useState("")
+
+    async function AlterarSenha() {
+        setLoading(true)
+        if (senha === confirmarSenha) {
+
+            api.put(`/Usuario/AlterarSenha?email=${route.params.emailRecup}`, { senhaNova: senha }).
+                then(() => {
+                    navigation.replace("Login")
+                }).catch(error => {
+                    console.log(error)
+                    setLoading(false)
+                })
+
+        } else {
+            alert("Senhas incompatíveis")
+        }
+        setLoading(false)
+
+    }
+
     return (
         <Container>
 
@@ -29,8 +55,9 @@ export const RedefinePassword = ({navigation}) => {
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
-            // value={fieldValue}
-            // onChangeText={onChangeText}
+
+                value={senha}
+                onChangeText={(txt) => setSenha(txt)}
             />
 
             <Input
@@ -38,12 +65,12 @@ export const RedefinePassword = ({navigation}) => {
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
-            // value={fieldValue}
-            // onChangeText={onChangeText}
+                value={confirmarSenha}
+                onChangeText={(txt) => setConfirmarSenha(txt)}
             />
 
-            <Button onPress={() => navigation.replace("Login")}>
-                <ButtonTitle>Confirmar nova senha</ButtonTitle>
+            <Button disabled={loading} onPress={() => AlterarSenha()}>
+                {loading ? <ActivityIndicator /> : <ButtonTitle>Confirmar nova senha</ButtonTitle>}
             </Button>
 
 

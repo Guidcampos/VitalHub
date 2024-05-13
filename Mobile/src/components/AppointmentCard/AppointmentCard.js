@@ -9,9 +9,11 @@ export const AppointmentCard = ({
     situacao = "Agendadas",
     onPressCancel,
     onPressAppointment,
+    idConsultaProntuario = '',
     ProfileNameCard,
     Age,
     TipoConsulta,
+    foto,
     navigation,
     profile = "Paciente",
     onPressCard
@@ -21,7 +23,7 @@ export const AppointmentCard = ({
 
         <ContainerCardList onPress={onPressCard}>
 
-            <ProfileImage source={{ uri: "https://github.com/Guidcampos.png" }} />
+            <ProfileImage source={{ uri: foto }} />
 
             <ContentCard>
 
@@ -54,7 +56,7 @@ export const AppointmentCard = ({
                             </ButtonCard>
                         ) : (
 
-                            <ButtonCard onPress={profile !== "Paciente" ? onPressAppointment : () => navigation.replace("ViewPrescription")}
+                            <ButtonCard onPress={profile !== "Paciente" ? onPressAppointment : () => navigation.replace("ViewPrescription", { id: idConsultaProntuario })}
                             >
                                 <ButtonTextCard situacao={situacao}>Ver prontuário</ButtonTextCard>
                             </ButtonCard>
@@ -75,13 +77,27 @@ export const AppointmentCard = ({
 
 export const SelectMedCard = ({
     textCard,
+    selected,
+    setMedico,
+    medico,
     onPressCard,
     ProfileNameCard,
     imageUrl,
 }) => {
+
+
     return (
 
-        <ContainerCardList>
+        <ContainerCardList
+            selected={selected}
+            onPress={() => setMedico(
+                {
+                    medicoClinicaId: medico.id,
+                    medicoLabel: medico.idNavigation.nome,
+                    medicoEspecialidade: medico.especialidade.especialidade1
+                }
+            )}
+        >
 
             <ProfileImage source={imageUrl} />
             {/* <ProfileImage source={{ uri: "https://github.com/Guidcampos.png" }} /> */}
@@ -107,14 +123,21 @@ export const SelectMedCard = ({
 
 export const SelectClinicCard = ({
     textCard,
-    onPressCard,
+    clinica,
+    setClinicaCard,
+    selected,
     ProfileNameCard,
     rate,
     openTime
 }) => {
     return (
 
-        <ContainerCardListClinic>
+        <ContainerCardListClinic
+            selected={selected}
+            onPress={() => setClinicaCard({
+                clinicaId: clinica.id,
+                clinicaLabel: clinica.nomeFantasia
+            })}>
 
 
             <ContentMedCard>

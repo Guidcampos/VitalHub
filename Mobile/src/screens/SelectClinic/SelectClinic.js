@@ -7,7 +7,7 @@ import { ListComponent } from "../../components/List/ListStyles";
 import { ButtonTitle, Title, TitleSelect } from "../../components/Title/TitleStyle";
 import api from "../../services/services";
 
-export const SelectClinic = ({ navigation }) => {
+export const SelectClinic = ({ navigation, route }) => {
 
     // const Clinicas = [
     //     { id: 1, nome: "Clínica Natureh", local: "São Paulo, SP", rate: "4,5", data: "Seg-Sex" },
@@ -19,21 +19,41 @@ export const SelectClinic = ({ navigation }) => {
 
     const [clinicasApi, setClinicasApi] = useState([])
 
+    const [clinicaCard, setClinicaCard] = useState(null)
+
+
+    async function handleContinue() {
+        navigation.replace("SelectMed", {
+            agendamento: {
+                ...route.params.agendamento,
+                ...clinicaCard
+            }
+        })
+    }
+
+
+
     async function GetClinicas() {
         //Chamando o metodo da api
-        await api.get('/Clinica/ListarTodas').then(async (response) => {
-            // console.log(response.data);
-            setClinicasApi(response.data)
+        await api.get(`/Clinica/BuscarPorCidade?cidade=${route.params.agendamento.localizacao}`)
+            .then(async (response) => {
+                // console.log(response.data);
+                setClinicasApi(response.data)
 
-        }).catch(error => {
-            console.log(error)
-        })
+            }).catch(error => {
+                console.log(error)
+            })
 
     }
 
     useEffect(() => {
         GetClinicas();
     }, []);
+
+    useEffect(() => {
+        console.log(route);
+    }, [route]);
+
 
     return (
 
@@ -55,6 +75,9 @@ export const SelectClinic = ({ navigation }) => {
                         <SelectClinicCard
                             ProfileNameCard={item.nomeFantasia}
                             textCard={item.endereco.cidade}
+                            selected={clinicaCard && clinicaCard.clinicaId === item.id}
+                            clinica={item}
+                            setClinicaCard={setClinicaCard}
                         // rate={item.rate}
                         // openTime={item.data}
 
@@ -65,7 +88,7 @@ export const SelectClinic = ({ navigation }) => {
             />
 
             <Button>
-                <ButtonTitle onPress={() => navigation.replace("SelectMed")}>Continuar</ButtonTitle>
+                <ButtonTitle onPress={() => handleContinue()}>Continuar</ButtonTitle>
             </Button>
 
             <LinkCode onPress={() => navigation.replace("Main")}>Cancelar</LinkCode>

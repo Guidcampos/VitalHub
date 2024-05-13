@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
 
-const CalendarComponent = () => {
-    
+const CalendarComponent = ({ setDataSelecionada, dataSelecionada }) => {
+
   const [selected, setSelected] = useState("");
 
   const currentDate = new Date();
@@ -31,16 +31,17 @@ const CalendarComponent = () => {
   return (
     <Calendar
       style={{
-        width : 360,
-        alignSelf : 'center',
-        backgroundColor : '#FAFAFA'
+        width: 360,
+        alignSelf: 'center',
+        backgroundColor: '#FAFAFA'
       }}
-    
+
       onDayPress={(day) => {
-        setSelected(day.dateString);
+        setDataSelecionada(day.dateString);
       }}
+
       markedDates={{
-        [selected]: {
+        [dataSelecionada]: {
           selected: true,
           disableTouchEvent: true
         },
@@ -49,18 +50,18 @@ const CalendarComponent = () => {
       minDate={startingDate}
 
       theme={{
-        calendarBackground : '#FAFAFA',
-        arrowColor : '#49B3BA',
-        textDisabledColor : '#C6C5CE',     
-        todayTextColor : '#5F5C6B',   
+        calendarBackground: '#FAFAFA',
+        arrowColor: '#49B3BA',
+        textDisabledColor: '#C6C5CE',
+        todayTextColor: '#5F5C6B',
         selectedDayTextColor: '#FAFAFA',
         selectedDayBackgroundColor: '#60BFC5',
 
-        textDayFontSize : 16,
-        textMonthFontSize : 20,
-        textDayHeaderFontSize : 12,
+        textDayFontSize: 16,
+        textMonthFontSize: 20,
+        textDayHeaderFontSize: 12,
 
-        textDayStyle : { "color" : '#5F5C6B'},
+        textDayStyle: { "color": '#5F5C6B' },
 
         textDayFontFamily: "Quicksand_600SemiBold",
         textDayHeaderFontFamily: "Quicksand_600SemiBold",

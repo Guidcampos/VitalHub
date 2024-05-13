@@ -4,11 +4,32 @@ import { Feather } from '@expo/vector-icons';
 import { ButtonTitle, Subtitle, Title } from "../../components/Title/TitleStyle";
 import { Input } from "../../components/Input/Input";
 import { Button } from "../../components/Button/ButtonStyle";
+import { useState } from "react";
+import api from "../../services/services";
+import { ActivityIndicator } from "react-native";
 
-export const ForgotPassword = ({navigation}) => {
+export const ForgotPassword = ({ navigation }) => {
+
+    const [email, setEmail] = useState('')
+    const [loading, setLoading] = useState(false)
+
+    async function EnviarEmail() {
+        setLoading(true)
+        await api.post(`/RecuperarSenha?email=${email}`)
+            .then(() => {
+                navigation.replace("CheckEmail", { emailRecup: email })
+                setLoading(false)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        setLoading(false)
+
+    }
+
     return (
         <Container>
-            
+
             {/* lembrar de mexer no icon, pois esta mais acima que a imagem */}
             <ConteinerIcon onPress={() => navigation.replace("Login")}>
 
@@ -30,12 +51,12 @@ export const ForgotPassword = ({navigation}) => {
                 placeholder={'Usuário ou E-mail'}
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
-            // value={fieldValue}
-            // onChangeText={onChangeText}
+                value={email}
+                onChangeText={(txt) => setEmail(txt)}
             />
 
-            <Button>
-                <ButtonTitle onPress={() => navigation.replace("CheckEmail")}>Continuar</ButtonTitle>
+            <Button disabled={loading} onPress={() => EnviarEmail()}>
+                {loading ? <ActivityIndicator /> : <ButtonTitle >Continuar</ButtonTitle>}
             </Button>
 
         </Container>

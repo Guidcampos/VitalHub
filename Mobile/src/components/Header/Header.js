@@ -2,11 +2,15 @@ import { ContainerHeader } from "../Container/ContainerStyle"
 import { Ionicons } from '@expo/vector-icons';
 import { BoxUser, DataUser, ImageUser, NameUser, TextDefault } from "./HomeStyles"
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { userDecodeToken } from "../../utils/Auth";
+import api from "../../services/services";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const Header = () => {
+export const Header = ({ }) => {
     const [token, setToken] = useState({})
+    const [foto, setFoto] = useState(null)
 
     async function profileLoad() {
 
@@ -18,9 +22,26 @@ export const Header = () => {
         }
     }
 
+    async function fotoLoad() {
+        await api.get(`Usuario/BuscarPorId?id=${token.id}`
+        ).then(response => {
+
+            setFoto(response.data.foto)
+        }).catch(error => {
+            console.log("esse " + error);
+        })
+    }
+
     useEffect(() => {
         profileLoad()
     }, [])
+
+    useFocusEffect(React.useCallback(() => {
+        fotoLoad()
+
+    }, [token]))
+
+
 
     return (
 
@@ -29,7 +50,7 @@ export const Header = () => {
             <BoxUser>
 
                 <ImageUser
-                    source={require('../../assets/unsplash_3HIroMoyre8.png')}
+                    source={{ uri: foto }}
                 />
 
                 <DataUser>
@@ -39,7 +60,7 @@ export const Header = () => {
 
             </BoxUser>
 
-            <Ionicons name="notifications" size={25} color="#fbfbfb" />
+            <Ionicons onPress={() => console.log(token)} name="notifications" size={25} color="#fbfbfb" />
 
         </ContainerHeader>
 

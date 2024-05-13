@@ -4,18 +4,26 @@ export const Input = ({
     placeholder,
     fieldValue,
     onChangeText,
+    editable = true,
+    multiline,
     keyType,
     placeholderTextColor,
+    verificado = true,
+    onBlur,
     secureTextEntry = false
 }) => {
-    return(
+    return (
         <InputBox
-        placeholder={placeholder}
-        keyboardType={keyType}
-        value={fieldValue}
-        onChangeText={onChangeText}
-        placeholderTextColor={placeholderTextColor}
-        secureTextEntry={secureTextEntry}
+            placeholder={placeholder}
+            keyboardType={keyType}
+            value={fieldValue}
+            multiline={multiline}
+            onChangeText={onChangeText}
+            placeholderTextColor={placeholderTextColor}
+            secureTextEntry={secureTextEntry}
+            editable={editable}
+            onBlur={onBlur}
+            verificado={verificado}
         />
     )
 }
@@ -29,14 +37,14 @@ export const InputEmail = ({
     placeholderTextColor,
     maxLength
 }) => {
-    return(
+    return (
         <InputCheckEmail
-        placeholder={placeholder}
-        keyboardType={keyType}
-        value={fieldValue}
-        onChangeText={onChangeText}
-        placeholderTextColor={placeholderTextColor}
-        maxLength={maxLength}
+            placeholder={placeholder}
+            keyboardType={keyType}
+            value={fieldValue}
+            onChangeText={onChangeText}
+            placeholderTextColor={placeholderTextColor}
+            maxLength={maxLength}
         />
     )
 }
@@ -45,18 +53,24 @@ export const InputProfile = ({
     placeholder,
     fieldValue,
     onChangeText,
+    editable,
     keyType,
     placeholderTextColor,
-    maxLength
+    maxLength,
+    verificado,
+    onBlur
 }) => {
-    return(
+    return (
         <InputProfileBox
-        placeholder={placeholder}
-        keyboardType={keyType}
-        value={fieldValue}
-        onChangeText={onChangeText}
-        placeholderTextColor={placeholderTextColor}
-        maxLength={maxLength}
+            placeholder={placeholder}
+            keyboardType={keyType}
+            value={fieldValue}
+            editable={editable}
+            onChangeText={onChangeText}
+            placeholderTextColor={placeholderTextColor}
+            maxLength={maxLength}
+            onBlur={onBlur}
+            verificado={verificado}
         />
     )
 }
@@ -65,21 +79,25 @@ export const InputProfile = ({
 export const InputMedicalRecord = ({
     placeholder,
     fieldValue,
+    editable,
+    multiline,
     onChangeText,
     keyType,
     placeholderTextColor,
     maxLength
 }) => {
 
-    return(
-        
+    return (
+
         <InputBoxMedicalRecord
-        placeholder={placeholder}
-        keyboardType={keyType}
-        value={fieldValue}
-        onChangeText={onChangeText}
-        placeholderTextColor={placeholderTextColor}
-        maxLength={maxLength}
+            placeholder={placeholder}
+            keyboardType={keyType}
+            value={fieldValue}
+            onChangeText={onChangeText}
+            placeholderTextColor={placeholderTextColor}
+            maxLength={maxLength}
+            editable={editable}
+            multiline={multiline}
         />
     )
 }
@@ -87,23 +105,23 @@ export const InputMedicalRecord = ({
 export function LargeInputModal({
     placeholder,
     fieldValue,
-    onChangeText ,
+    onChangeText,
     keyboardType,
     maxLength,
     placeholderTextColor,
     editable = true,
     secureTextEntry = false
 }) {
-    return(
+    return (
         <InputTextLargeModal
-        editable={editable}
-        placeholder={placeholder}
-        keyboardType= {keyboardType}
-        placeholderTextColor={placeholderTextColor}
-        maxLength={maxLength}
-        value= {fieldValue}
-        onChangeText={onChangeText}
-        secureTextEntry={secureTextEntry}
+            editable={editable}
+            placeholder={placeholder}
+            keyboardType={keyboardType}
+            placeholderTextColor={placeholderTextColor}
+            maxLength={maxLength}
+            value={fieldValue}
+            onChangeText={onChangeText}
+            secureTextEntry={secureTextEntry}
         />
     )
 }
@@ -111,19 +129,23 @@ export function LargeInputModal({
 export const InputViewPrescription = ({
     placeholder,
     fieldValue,
+    multiline,
     onChangeText,
+    editable,
     keyType,
     placeholderTextColor,
     maxLength,
 }) => {
-    return(
+    return (
         <InputViewPrescriptionBox
-        placeholder={placeholder}
-        keyboardType={keyType}
-        value={fieldValue}
-        onChangeText={onChangeText}
-        placeholderTextColor={placeholderTextColor}
-        maxLength={maxLength}
+            placeholder={placeholder}
+            editable={editable}
+            keyboardType={keyType}
+            value={fieldValue}
+            onChangeText={onChangeText}
+            placeholderTextColor={placeholderTextColor}
+            maxLength={maxLength}
+            multiline={multiline}
         />
     )
 }
@@ -131,19 +153,23 @@ export const InputViewPrescription = ({
 export const InputPrescriptionView = ({
     placeholder,
     fieldValue,
+    editable,
+    multiline,
     onChangeText,
     keyType,
     placeholderTextColor,
     maxLength,
 }) => {
-    return(
+    return (
         <InputPrescriptionViewBox
-        placeholder={placeholder}
-        keyboardType={keyType}
-        value={fieldValue}
-        onChangeText={onChangeText}
-        placeholderTextColor={placeholderTextColor}
-        maxLength={maxLength}
+            placeholder={placeholder}
+            keyboardType={keyType}
+            editable={editable}
+            value={fieldValue}
+            onChangeText={onChangeText}
+            placeholderTextColor={placeholderTextColor}
+            maxLength={maxLength}
+            multiline={multiline}
         />
     )
 }

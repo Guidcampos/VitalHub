@@ -10,9 +10,13 @@ import api from "../../services/services"
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { ActivityIndicator } from "react-native"
+import { userDecodeToken } from "../../utils/Auth"
+
 
 export const Login = ({ navigation }) => {
-    const [email, setEmail] = useState('gui@paciente.com')
+    // const [email, setEmail] = useState('gui@paciente.com')
+    // const [email, setEmail] = useState('guilherme.campos.r@gmail.com')
+    const [email, setEmail] = useState('gui3@medico.com')
     const [senha, setSenha] = useState('gui123')
     const [loading, setLoading] = useState(false)
 
@@ -24,10 +28,11 @@ export const Login = ({ navigation }) => {
             email: email,
             senha: senha
         }).then(async (response) => {
-            // console.log(response.data)
+            console.log(response.data)
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
+            const token = await userDecodeToken()
             setLoading(false)
-            navigation.navigate("Main")
+            token.name != '...' ? navigation.navigate("Main") : navigation.navigate("UserProfile")
 
         }).catch(error => {
             console.log(error)

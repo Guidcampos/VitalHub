@@ -5,12 +5,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 export const SmallButtonModal = ({
     onPress,
-    text
+    text,
+    selected
 }) => {
     return (
         <SmallButton
+            selected={selected}
             onPress={onPress}>
-                <BabyBlueButtonText>{text}</BabyBlueButtonText>
+            <BabyBlueButtonText selected={selected}>{text}</BabyBlueButtonText>
         </SmallButton>
     );
 }
@@ -22,8 +24,8 @@ export const ButtonSendPrescription = ({
     return (
         <ButtonSend
             onPress={onPress}>
-                <MaterialIcons name="add-a-photo" size={24} color="white" />
-                <ButtonSendText>{text}</ButtonSendText>
+            <MaterialIcons name="add-a-photo" size={24} color="white" />
+            <ButtonSendText>{text}</ButtonSendText>
         </ButtonSend>
     );
 }
@@ -34,7 +36,7 @@ export const ButtonCanceled = ({
 }) => {
     return (
         <ButtonCancel onPress={onPress}>
-                <ButtonCancelText>{text}</ButtonCancelText>
+            <ButtonCancelText>{text}</ButtonCancelText>
         </ButtonCancel>
     );
 }

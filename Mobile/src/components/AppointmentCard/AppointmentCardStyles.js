@@ -11,12 +11,16 @@ flex-direction: row;
 height: 105px;
 gap: 10px;
 elevation: 5px;
+${(props) => props.selected ? "border: 2px solid #49B3BA" : null};
+
 /* box-shadow: 4px 4px 15px rgba(0,0,0, 0.08); */
 `
 
 export const ContainerCardListClinic = styled(ContainerCardList)`
 height: 84px;
 justify-content: space-around;
+/* ${(props) => props.selected ? "border: 2px solid #49B3BA" : null}; */
+
 `
 
 export const ProfileImage = styled.Image`

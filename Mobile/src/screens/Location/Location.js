@@ -43,8 +43,9 @@ export const Location = ({ navigation, route }) => {
                     <ScrollViewLocation contentContainerStyle={style = { alignItems: 'center' }} showsVerticalScrollIndicator={false}>
                         <BoxInput
                             textLabel='Endereço'
-                            placeholder='Rua Vicenso Silva, 987'
+                            placeholder='Endereço'
                             keyType='text'
+                            editable={false}
                             fieldValue={clinica.endereco.logradouro}
                         />
 
@@ -52,17 +53,19 @@ export const Location = ({ navigation, route }) => {
 
                             <BoxInput
                                 textLabel='Número'
-                                placeholder='578'
+                                placeholder='Número'
                                 keyType='numeric'
                                 fieldWidth={45}
+                                editable={false}
                                 maxLength={8}
                                 fieldValue={String(clinica.endereco.numero)}
                             />
 
                             <BoxInput
                                 textLabel='Bairro'
-                                placeholder='Moema-SP'
+                                placeholder='Bairro'
                                 keyType='text'
+                                editable={false}
                                 fieldWidth={50}
                                 fieldValue={clinica.endereco.cidade}
                             />

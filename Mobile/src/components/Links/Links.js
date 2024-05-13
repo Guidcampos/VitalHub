@@ -25,7 +25,8 @@ export const LinkCodeModal = styled(LinkAccount)`
     margin-bottom: 26px;
 `
 export const LinkLocation = styled(LinkAccount)`
-
+    margin-bottom: 15px;
+    
 `
 export const LinkBack = styled(LinkAccount)`
 margin-top: 20px;

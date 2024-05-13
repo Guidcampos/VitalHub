@@ -51,6 +51,9 @@ border: 2px solid  #60BFC5;
 border-radius: 10px;
 display: flex;
 align-items:center;
+
+${(props) => props.selected ? "background-color: #60BFC5" : null};
+
 `
 export const ButtonSend = styled.TouchableOpacity`
 width: 172px;

@@ -3,17 +3,62 @@ import { Camera, CameraType } from 'expo-camera';
 import { useEffect, useState, useRef } from 'react';
 import { FontAwesome, AntDesign, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
-export const CameraModal = ({ visible, setUriCameraCapture, setShowCameraModel = false }) => {
+import * as MediaLibrary from 'expo-media-library'
+import * as ImagePicker from 'expo-image-picker'
+import { LastPhoto } from './Style';
+
+export const CameraModal = ({ visible, setUriCameraCapture, setShowCameraModel = false, getMediaLibrary = false }) => {
 
     const cameraRef = useRef(null)
     const [photo, setPhoto] = useState(null)
     const [openModal, setOpenModal] = useState(false)
     const [tipoCamera, setTipoCamera] = useState(CameraType.front)
+    //pegar foto da galeria
+    const [lastPhoto, setLastPhoto] = useState(null)
+
+
+    async function GetLastestPhoto() {
+        // console.log("teste")
+        const { assets } = await MediaLibrary.getAssetsAsync({ sortBy: [[MediaLibrary.SortBy.creationTime, false]], first: 1 })
+        // const { assets } = await MediaLibrary.getAssetsAsync();
+
+        if (assets.length > 0) {
+            setLastPhoto(assets[0].uri)
+        }
+        // console.log(assets);
+    }
+
+
+    async function SelectImageGalery() {
+        const result = await ImagePicker.launchImageLibraryAsync({
+
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            quality: 1
+        })
+        if (!result.canceled) {
+
+            setPhoto(result.assets[0].uri)
+            setOpenModal(true)
+        }
+    }
+
+
+
+
 
     useEffect(() => {
         (async () => {
             const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync()
-        })();
+            const { status: mediaStatus } = await MediaLibrary.requestPermissionsAsync();
+        })()
+
+    }, [])
+
+    useEffect(() => {
+        if (getMediaLibrary) {
+            GetLastestPhoto()
+        }
+
     }, [])
 
     async function CapturePhoto() {
@@ -45,26 +90,40 @@ export const CameraModal = ({ visible, setUriCameraCapture, setShowCameraModel =
                 type={tipoCamera}
                 style={styles.camera}
                 ratio='16:9'>
-           
-            <View style={styles.viewCapture}>
 
-                <TouchableOpacity
-                    style={styles.btnFlip}>
-                    <Ionicons name='flash' size={40} color="#FFF" />
+                <View style={styles.viewCapture}>
 
-                </TouchableOpacity>
+                    {/* <TouchableOpacity
+                        style={styles.btnFlip}>
+                        <Ionicons name='flash' size={40} color="#FFF" />
 
-                <TouchableOpacity style={styles.btnCapture} onPress={() => CapturePhoto()}>
-                    <FontAwesome name='camera' size={23} color="#FFF" />
-                </TouchableOpacity>
+                    </TouchableOpacity> */}
 
-                <TouchableOpacity
-                    style={styles.btnFlip}
-                    onPress={() => setTipoCamera(tipoCamera === CameraType.front ? CameraType.back : CameraType.front)}>
-                    <Ionicons name='camera-reverse' size={40} color="#FFF" />
+                    {/* buscar da galeria */}
+                    {
 
-                </TouchableOpacity>
-            </View>
+                        lastPhoto !== null ? (
+                            <TouchableOpacity style={styles.btnFlip} onPress={() => SelectImageGalery()}>
+                                <LastPhoto source={{ uri: lastPhoto }} />
+                            </TouchableOpacity>
+                        ) : (
+                            <>
+                            </>
+                        )
+
+                    }
+
+                    <TouchableOpacity style={styles.btnCapture} onPress={() => CapturePhoto()}>
+                        <FontAwesome name='camera' size={23} color="#FFF" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.btnFlip}
+                        onPress={() => setTipoCamera(tipoCamera === CameraType.front ? CameraType.back : CameraType.front)}>
+                        <Ionicons name='camera-reverse' size={40} color="#FFF" />
+
+                    </TouchableOpacity>
+                </View>
             </Camera>
             <TouchableOpacity style={styles.btnClear} onPress={() => setShowCameraModel(false)}>
                 <AntDesign name='closecircle' size={40} color="#ff0000" />
@@ -88,7 +147,7 @@ export const CameraModal = ({ visible, setUriCameraCapture, setShowCameraModel =
                         </Button> */}
 
                         <TouchableOpacity style={styles.btnUpload} onPress={() => UploadPhoto()}>
-                            <MaterialCommunityIcons  name='upload' size={50} color="#FFF" />
+                            <MaterialCommunityIcons name='upload' size={50} color="#FFF" />
                         </TouchableOpacity>
 
                     </View>
@@ -125,7 +184,7 @@ const styles = StyleSheet.create({
 
     viewCapture: {
         alignItems: 'center',
-        
+
         justifyContent: 'center',
         flexDirection: 'row',
     },

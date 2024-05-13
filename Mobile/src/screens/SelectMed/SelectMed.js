@@ -13,7 +13,7 @@ import api from "../../services/services";
 //criar um effect para a chamada da função
 
 
-export const SelectMed = ({ navigation }) => {
+export const SelectMed = ({ navigation, route }) => {
 
     //Passar os dados do array para o flatlist
     // const Medicos = [
@@ -23,10 +23,11 @@ export const SelectMed = ({ navigation }) => {
 
     // ];
     const [medicosApi, setMedicosApi] = useState([])
+    const [medico, setMedico] = useState(null)
 
     async function GetMedicos() {
         //Chamando o metodo da api
-        await api.get('/Medicos').then(async (response) => {
+        await api.get(`/Medicos/BuscarPorIdClinica?id=${route.params.agendamento.clinicaId}`).then(async (response) => {
             // console.log(response.data);
             setMedicosApi(response.data)
 
@@ -36,9 +37,22 @@ export const SelectMed = ({ navigation }) => {
 
     }
 
+    async function handleContinue() {
+        navigation.replace("SelectDate", {
+            agendamento: {
+                ...route.params.agendamento,
+                ...medico
+            }
+        })
+    }
+
     useEffect(() => {
         GetMedicos();
     }, []);
+
+    useEffect(() => {
+        console.log(route);
+    }, [route]);
 
     return (
 
@@ -58,6 +72,9 @@ export const SelectMed = ({ navigation }) => {
                     ({ item }) =>
                     (
                         <SelectMedCard
+                            selected={medico && medico.medicoClinicaId === item.id}
+                            medico={item}
+                            setMedico={setMedico}
                             ProfileNameCard={item.idNavigation.nome}
                             textCard={item.especialidade.especialidade1}
                             imageUrl={{ uri: item.idNavigation.foto === 'string' ? "https://github.com/Guidcampos.png" : item.idNavigation.foto }}
@@ -68,11 +85,11 @@ export const SelectMed = ({ navigation }) => {
 
             />
 
-            <Button onPress={() => navigation.replace("SelectDate")}>
+            <Button onPress={() => handleContinue()}>
                 <ButtonTitle>Continuar</ButtonTitle>
             </Button>
 
-            <LinkCode onPress={() => navigation.replace("SelectClinic")}>Cancelar</LinkCode>
+            <LinkCode onPress={() => navigation.replace("Main")}>Cancelar</LinkCode>
 
         </Container>
     );

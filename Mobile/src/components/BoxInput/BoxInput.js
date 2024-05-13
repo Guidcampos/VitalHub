@@ -1,6 +1,6 @@
 import { Input, InputMedicalRecord, InputPrescriptionView, InputProfile, InputViewPrescription, LargeInputModal } from "../Input/Input"
 import { Label, LabelMedicalRecord } from "../Label/Label"
-import { FieldContent, FieldContentMedicalRecord } from "./BoxInputStyles"
+import { FieldContent, FieldContentMedicalRecord, FotoPrescriptions, InputFoto } from "./BoxInputStyles"
 import { InputLabelModal } from "../Title/TitleStyle"
 
 
@@ -12,14 +12,16 @@ export const BoxInput = ({
     fieldValue = null,
     onChangeText = null,
     keyType = 'default',
+    onBlur,
+    verificado = true,
     maxLength
 }) => {
-    return(
+    return (
         <FieldContent fieldWidth={fieldWidth}>
 
-        <Label textLabel={textLabel}/>
+            <Label textLabel={textLabel} />
 
-        <InputProfile editable={editable} placeholder={placeholder } fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength}/>
+            <InputProfile verificado={verificado} onBlur={onBlur} editable={editable} placeholder={placeholder} fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength} />
 
         </FieldContent>
     )
@@ -29,19 +31,20 @@ export const BoxInputMedicalRecord = ({
     fieldWidth = 100,
     editable = true,
     textLabel,
+    multiline,
     placeholder,
     fieldValue = null,
     onChangeText = null,
     keyType = 'default',
     maxLength,
-    placeholderTextColor='#34898F'
+    placeholderTextColor = '#34898F'
 }) => {
-    return(
+    return (
         <FieldContentMedicalRecord fieldWidth={fieldWidth}>
 
-        <LabelMedicalRecord textLabel={textLabel}/>
+            <LabelMedicalRecord textLabel={textLabel} />
 
-        <InputMedicalRecord editable={editable} placeholder={placeholder } fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength} placeholderTextColor={placeholderTextColor}/>
+            <InputMedicalRecord multiline={multiline} editable={editable} placeholder={placeholder} fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength} placeholderTextColor={placeholderTextColor} />
 
         </FieldContentMedicalRecord>
     )
@@ -50,20 +53,21 @@ export const BoxInputMedicalRecord = ({
 export const BoxInputMedical = ({
     fieldWidth = 100,
     editable = true,
+    multiline,
     textLabel,
     placeholder,
     fieldValue = null,
     onChangeText = null,
     keyType = 'default',
     maxLength,
-    placeholderTextColor='#34898F'
+    placeholderTextColor = '#34898F'
 }) => {
-    return(
+    return (
         <FieldContentMedicalRecord fieldWidth={fieldWidth}>
 
-        <Label textLabel={textLabel}/>
+            <Label textLabel={textLabel} />
 
-        <Input editable={editable} placeholder={placeholder } fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength} placeholderTextColor={placeholderTextColor}/>
+            <Input multiline={multiline} editable={editable} placeholder={placeholder} fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength} placeholderTextColor={placeholderTextColor} />
 
         </FieldContentMedicalRecord>
     )
@@ -105,6 +109,8 @@ export const LargeInputBoxModal = ({
 export const BoxInputViewPrescription = ({
     fieldWidth = 90,
     fieldHeight = 90,
+    multiline,
+    foto = null,
     editable = true,
     textLabel,
     placeholder,
@@ -113,13 +119,17 @@ export const BoxInputViewPrescription = ({
     keyType = 'default',
     maxLength
 }) => {
-    return(
+    return (
         <FieldContent fieldWidth={fieldWidth} fieldHeight={fieldHeight}>
+            <Label textLabel={textLabel} />
 
-        <Label textLabel={textLabel}/>
-        
-        <InputViewPrescription editable={editable} placeholder={placeholder} fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength}/>
-
+            {foto != null ?
+                <InputFoto>
+                    <FotoPrescriptions source={{ uri: foto }} />
+                </InputFoto>
+                : <>
+                    <InputViewPrescription multiline={multiline} editable={editable} placeholder={placeholder} fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength} />
+                </>}
         </FieldContent>
     )
 }
@@ -128,6 +138,7 @@ export const BoxInputPrescriptionView = ({
     fieldWidth = 90,
     fieldHeight = 90,
     editable = true,
+    multiline,
     textLabel,
     placeholder,
     fieldValue = null,
@@ -135,12 +146,12 @@ export const BoxInputPrescriptionView = ({
     keyType = 'default',
     maxLength
 }) => {
-    return(
+    return (
         <FieldContent fieldWidth={fieldWidth} fieldHeight={fieldHeight}>
 
-        <Label textLabel={textLabel}/>
+            <Label textLabel={textLabel} />
 
-        <InputPrescriptionView editable={editable} placeholder={placeholder} fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength}/>
+            <InputPrescriptionView multiline={multiline} editable={editable} placeholder={placeholder} fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength} />
 
         </FieldContent>
     )

@@ -14,6 +14,8 @@ export const ImageUser = styled.Image`
 
 width: 60px;
 height: 60px;
+resizeMode: contain;
+
 
 
 `

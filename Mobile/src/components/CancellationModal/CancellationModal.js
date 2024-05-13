@@ -22,10 +22,7 @@ export const CancellationModal = ({
 
 
         //Chamando o metodo da api
-        await api.put(`/Consultas/Status`,
-
-
-            { id: consultaCancel.id, situacaoId: consultaCancel.situacaoId }
+        await api.put(`/Consultas/Status?idConsulta=${consultaCancel.id}&status=${consultaCancel.situacao}`,
 
 
         ).then(response => {

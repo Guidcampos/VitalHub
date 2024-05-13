@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { BtnListAppointment } from "../../components/BtnListAppointment/BtnListAppointment"
 import { CalendarHome } from "../../components/Calendar/Calendar"
 import { Container } from "../../components/Container/ContainerStyle"
@@ -16,6 +16,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { userDecodeToken } from "../../utils/Auth"
 import { dateFormatDbToView, functionPrioridade } from "../../utils/StringFunction"
 import moment from "moment"
+import { logProfileData } from "react-native-calendars/src/Profiler"
+import { useFocusEffect } from "@react-navigation/native"
 
 export const PatientConsultations = ({ navigation }) => {
 
@@ -31,13 +33,14 @@ export const PatientConsultations = ({ navigation }) => {
 
 
 
-    const [medicoModal, setMedicoModal] = useState({ nome: '', especialidade: '', crm: '', clinica: '' })
+    const [medicoModal, setMedicoModal] = useState({ nome: '', especialidade: '', crm: '', clinica: '', foto: '' })
     //state para cancelar consulta
     const [consultaCancel, setConsultaCancel] = useState({
         id: '',
         //ID DE CONSULTAS CANCELAS, PEGAR NO BANCO -----------------------------
-        situacaoId: "DFCEBD4F-A79B-4989-8507-82DD6004B7E7"
+        situacao: "Canceladas"
     })
+
 
     async function ProfileLoad() {
         const token = await userDecodeToken()
@@ -56,6 +59,7 @@ export const PatientConsultations = ({ navigation }) => {
         //Chamando o metodo da api
         await api.get(`/Pacientes/BuscarPorData?data=${dataConsulta}&id=${profile.id}`
         ).then(response => {
+
             setConsultasApi(response.data)
         }).catch(error => {
             console.log(error);
@@ -93,7 +97,7 @@ export const PatientConsultations = ({ navigation }) => {
         if (dataConsulta != '') {
             GetConsultas()
         }
-    }, [dataConsulta, consultasApi])
+    }, [dataConsulta, showModalCancel])
 
 
     // const Consultas = [
@@ -157,7 +161,8 @@ export const PatientConsultations = ({ navigation }) => {
                                             nome: item.medicoClinica.medico.idNavigation.nome,
                                             crm: item.medicoClinica.medico.crm,
                                             especialidade: item.medicoClinica.medico.especialidade.especialidade1,
-                                            clinica: item.medicoClinica.clinicaId
+                                            clinica: item.medicoClinica.clinicaId,
+                                            foto: item.medicoClinica.medico.idNavigation.foto
                                         })
                                 }}
                                 onPressCancel={() => {
@@ -169,6 +174,9 @@ export const PatientConsultations = ({ navigation }) => {
                                 ProfileNameCard={item.medicoClinica.medico.idNavigation.nome}
                                 Age={"CRM - " + item.medicoClinica.medico.crm}
                                 TipoConsulta={functionPrioridade(item.prioridade.prioridade)}
+                                idConsultaProntuario={item.id}
+                                foto={item.medicoClinica.medico.idNavigation.foto}
+
                             />
                         )
                 }

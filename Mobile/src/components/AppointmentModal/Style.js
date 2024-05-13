@@ -30,5 +30,6 @@ export const AppointmentImageModal = styled.Image`
     height: 181px;
     border-radius: 10px;
     margin-bottom: 20px;
+    resizeMode: contain;
 
 `

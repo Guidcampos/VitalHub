@@ -6,15 +6,37 @@ import { LinkCode } from "../../components/Links/Links"
 import { Logo } from "../../components/Logo/LogoStyle"
 import { ButtonTitle, Subtitle, Title } from "../../components/Title/TitleStyle"
 import api from "../../services/services"
-import { Alert } from "react-native"
+import { ActivityIndicator, Alert } from "react-native"
+import { handleCallNotifications } from "../../components/Notifications/Notifications"
 
 export const CreateAccount = ({ navigation }) => {
     const [email, setEmail] = useState('')
+    const [nome, setNome] = useState('')
     const [senha, setSenha] = useState('')
     const [verificarSenha, setVerificarSenha] = useState('')
+    const [senhaVerificada, setSenhaVerificada] = useState(true)
+
+    //TIPO DE USUARIO VINDO DO BANCO -- ALTERAR ---------------------------------------------
     const [idTipoUsuario, setTipoUsuario] = useState('775747A8-EC31-4288-B27E-BF43CE94812A')
 
+    const [loading, setLoading] = useState(false)
+
+    function confirmarSenha() {
+        if (senha === verificarSenha) {
+            setSenhaVerificada(true)
+        } else {
+            setSenhaVerificada(false)
+        }
+
+    }
     async function cadastrar(verificarSenha, senha) {
+        setLoading(true)
+
+        if (nome === "") {
+            Alert.alert(
+                "Erro", "Favor preencher o campo Nome"
+            )
+        }
         if (email === "") {
             Alert.alert(
                 "Erro", "Favor preencher o campo email"
@@ -35,26 +57,49 @@ export const CreateAccount = ({ navigation }) => {
         }
         else if (verificarSenha === senha) {
 
-            try {
-                await api.post("/Pacientes", {
-                    email: email,
-                    senha: senha,
-                    idTipoUsuario: idTipoUsuario,
-                })
-                console.log("Cadastrado com sucesso")
+            setLoading(true)
 
+            try {
+
+                const form = new FormData()
+                form.append("nome", `${nome}`)
+                form.append("email", `${email}`)
+                form.append("senha", `${senha}`)
+                form.append("idTipoUsuario", `${idTipoUsuario}`)
+
+
+
+                await api.post("/Pacientes", form,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    }
+                    // {
+                    //     nome: "",
+                    //     // foto: "string",
+                    //     email: email,
+                    //     senha: senha,
+                    //     idTipoUsuario: idTipoUsuario,
+                    // }
+                )
+                handleCallNotifications({
+                    title: "Cadastrado com sucesso",
+                    body: "Faça o login e complete seu cadastro!"
+                })
+                setLoading(false)
                 navigation.replace("Login")
             } catch (error) {
-
-                console.log("erro ao cadastrar")
+                console.log(error);
+                setLoading(false)
             }
-
         }
         else {
             console.log("Senhas não batem")
             Alert.alert(
                 "Erro", "Senhas não batem"
             )
+            setLoading(false)
         }
     }
 
@@ -70,7 +115,14 @@ export const CreateAccount = ({ navigation }) => {
             <Subtitle>Insira seu endereço de e-mail e senha para realizar seu cadastro.</Subtitle>
 
             <Input
-                placeholder={'Usuário ou E-mail'}
+                placeholder={'Nome'}
+                keyboardType={'text'}
+                placeholderTextColor={'#34898F'}
+                value={nome}
+                onChangeText={(txt) => setNome(txt)}
+            />
+            <Input
+                placeholder={'Email'}
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 value={email}
@@ -92,16 +144,20 @@ export const CreateAccount = ({ navigation }) => {
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
                 value={verificarSenha}
+                onBlur={confirmarSenha}
+                verificado={senhaVerificada}
                 onChangeText={
                     (txt) => setVerificarSenha(txt)
                 }
             />
 
             <Button>
-                <ButtonTitle onPress={() => cadastrar(verificarSenha, senha)}>Cadastrar</ButtonTitle>
+                {loading ? <ActivityIndicator />
+                    : <ButtonTitle disabled={loading} onPress={() => cadastrar(verificarSenha, senha)}>Cadastrar</ButtonTitle>}
             </Button>
 
-            <LinkCode onPress={() => navigation.replace("Login")}>Cancelar</LinkCode>
+            <LinkCode disabled={loading} onPress={() => navigation.replace("Login")}>Cancelar</LinkCode>
+
 
         </Container>
     )

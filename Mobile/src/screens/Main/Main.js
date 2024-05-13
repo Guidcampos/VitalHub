@@ -16,6 +16,7 @@ export const Main = () => {
 
     const [profile, setShowProfile] = useState("Paciente")
 
+
     async function profileLoad() {
 
         const token = await userDecodeToken()
@@ -29,6 +30,7 @@ export const Main = () => {
     useEffect(() => {
         profileLoad()
     }, [])
+
 
 
     return (

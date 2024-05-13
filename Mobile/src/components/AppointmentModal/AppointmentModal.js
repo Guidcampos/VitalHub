@@ -46,7 +46,7 @@ export const AppointmentModal = ({
                 {/* Content */}
                 <AppointmentModalContent>
 
-                    <AppointmentImageModal source={require('../../assets/appointmentmodal.png')} />
+                    <AppointmentImageModal source={{ uri: paciente.foto }} />
 
                     <Title>{paciente.nome}</Title>
 
@@ -57,7 +57,7 @@ export const AppointmentModal = ({
 
                     </ContainerMedicalRecord>
 
-                    <ButtonModal onPress={() => navigation.replace("MedicalRecord", { idPaciente: paciente.idPaciente, idade: idade })}>
+                    <ButtonModal onPress={() => navigation.replace("MedicalRecord", { idPaciente: paciente.idPaciente, idade: idade, foto: paciente.foto, consultaId: paciente.consultaId })}>
                         <ButtonTitle>Inserir Prontuário</ButtonTitle>
                     </ButtonModal>
 

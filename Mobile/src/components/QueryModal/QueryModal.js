@@ -25,7 +25,7 @@ export const QueryModal = ({
                 {/* Content */}
                 <QueryModalContent>
 
-                    <QueryImageModal source={require('../../assets/MedicQuery.png')} />
+                    <QueryImageModal source={{ uri: medico.foto }} />
 
                     <Title>{medico.nome}</Title>
 
