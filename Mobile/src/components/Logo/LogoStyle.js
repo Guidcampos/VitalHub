@@ -13,7 +13,7 @@ margin-right: 27px;
 export const UserImage = styled.Image`
 width: 100%;
 height: 280px;
-resizeMode: contain;
+/* resizeMode: contain; */
 
 `
 export const ViewPrescriptiionImage = styled.Image`

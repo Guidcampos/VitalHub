@@ -51,6 +51,7 @@ export const ViewPrescription = ({ navigation, route }) => {
         }).then(response => {
             // setDescricaoExame(descricaoExame + "\n" + response.data.descricao)
             setDescricaoExame(response.data.descricao)
+
             console.log("EXAME  " + descricaoExame + "\n" + response.data.descricao)
         }).catch(error => {
             console.log(error)
@@ -135,7 +136,7 @@ export const ViewPrescription = ({ navigation, route }) => {
 
                         <ButtonSendPrescription text={'Enviar'} onPress={() => setShowCameraModel(true)} />
 
-                        <ButtonCanceled text={'Cancelar'} onPress={() => setUriCameraCapture(null)} />
+                        <ButtonCanceled text={'Cancelar'} onPress={() => { setUriCameraCapture(null), setDescricaoExame(null) }} />
 
                     </ContainerViewPrescriptionButton>
 

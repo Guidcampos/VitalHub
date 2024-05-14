@@ -17,7 +17,8 @@ export const AppointmentModalContent = styled.View`
 `
 export const AppointmentModalText = styled.Text`
     width: 270px;
-    font-size: 16px;
+    
+    font-size: ${props => !props.emailgrande ? "16px" : "12px"};
     color: #5f5c6b;
     line-height: 22px;
     text-align: center;

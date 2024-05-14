@@ -94,6 +94,10 @@ export const UserProfile = ({ navigation }) => {
             setVerificadoNascimento(false)
         } else if (usuarioATT.nascimento.length === 10) {
             setVerificadoNascimento(true)
+        }
+        else if (usuarioATT.nascimento.includes("-")) {
+            setVerificadoNascimento(true)
+
         } else {
             setVerificadoNascimento(false)
             Alert.alert('Aviso', 'Por favor preencha uma data valida \n DD/MM/YYYY')
@@ -219,6 +223,9 @@ export const UserProfile = ({ navigation }) => {
                 if (!usuarioATT.nascimento) {
                     setPrimeiroAcesso(true)
                     setVerificadoNascimento(false)
+                }
+                if (!usuarioATT.nascimento.includes("-")) {
+                    setVerificadoNascimento(true)
                 }
 
 

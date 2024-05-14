@@ -55,8 +55,11 @@ export default function App() {
 
 
     <NavigationContainer>
+      <StatusBar translucent backgroundColor='transparent' barStyle="light-content" hidden={true} />
 
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+      >
         <Stack.Screen
           name='Login'
           component={Login}

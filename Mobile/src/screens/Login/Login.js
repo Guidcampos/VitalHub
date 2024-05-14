@@ -53,7 +53,7 @@ export const Login = ({ navigation }) => {
             <Title>Entrar ou criar conta</Title>
 
             <Input
-                placeholder={'Usuário ou E-mail'}
+                placeholder={'E-mail'}
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
 

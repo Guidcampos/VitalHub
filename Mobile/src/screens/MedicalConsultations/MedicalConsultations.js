@@ -42,7 +42,8 @@ export const MedicalConsultations = ({ navigation }) => {
     })
     const [consultaRealizada, setConsultaRealizada] = useState({
         id: '',
-        situacao: ""
+        situacao: "",
+        data: ""
     })
 
 
@@ -170,7 +171,8 @@ export const MedicalConsultations = ({ navigation }) => {
                                         })
                                         setConsultaRealizada({
                                             id: item.id,
-                                            situacao: item.situacao.situacao
+                                            situacao: item.situacao.situacao,
+                                            data: item.dataConsulta
                                         })
                                     }
                                 }

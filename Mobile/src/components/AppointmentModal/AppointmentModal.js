@@ -1,4 +1,4 @@
-import { Modal } from "react-native"
+import { ActivityIndicator, Modal } from "react-native"
 import { AppointmentImageModal, AppointmentModalContent, AppointmentModalText, AppointmentPatientModal } from "./Style"
 import { LinkCodeModal } from "../Links/Links"
 import { ButtonModal } from "../Button/ButtonStyle"
@@ -8,6 +8,9 @@ import { ContainerMedicalRecord } from "../Container/ContainerStyle"
 import { useEffect, useState } from "react"
 import { userDecodeToken } from "../../utils/Auth"
 import { dateFormatDbToView } from "../../utils/StringFunction"
+import api from "../../services/services"
+import moment from "moment"
+import { handleCallNotifications } from "../Notifications/Notifications"
 
 export const AppointmentModal = ({
     visible,
@@ -19,6 +22,8 @@ export const AppointmentModal = ({
 }) => {
     const [ano, setAno] = useState()
     const [idade, setIdade] = useState()
+    const [loading, setLoading] = useState(false)
+    const [dataok, setDataok] = useState(false)
 
 
     async function calcularData(ano) {
@@ -30,13 +35,44 @@ export const AppointmentModal = ({
         return setIdade(new Date().getFullYear() - ano);
     }
 
-    // async function handleRealizadas () {
 
-    // }
+    const verificarData = () => {
+        setDataok(moment(consultaRealizada.data).format("DD/MM/YYYY") <= moment().format("DD/MM/YYYY"))
+    }
+
+    async function handleRealizadas() {
+
+        setLoading(true)
+        if (dataok) {
+            //Chamando o metodo da api
+            await api.put(`/Consultas/Status?idConsulta=${consultaRealizada.id}&status=Realizadas`,
+
+            ).then(response => {
+
+                handleCallNotifications({
+                    title: "Tudo Certo",
+                    body: "Consulta confirmada com sucesso"
+                })
+                setShowModalAppointment(false)
+                setLoading(false)
+            }).catch(error => {
+                console.log(error)
+                setLoading(false)
+            })
+        } else {
+            handleCallNotifications({
+                title: "Algo está errado",
+                body: "Sua consulta não pode ser confirmada pois ela ainda não ocorreu"
+            })
+            setShowModalAppointment(false)
+            setLoading(false)
+        }
+
+    }
 
     useEffect(() => {
         calcularData(ano)
-
+        verificarData()
     })
     return (
         <Modal
@@ -58,19 +94,25 @@ export const AppointmentModal = ({
                     <ContainerMedicalRecord>
 
                         <AppointmentModalText>{idade} anos</AppointmentModalText>
-                        <AppointmentModalText>{paciente.email}</AppointmentModalText>
+                        <AppointmentModalText emailgrande={paciente.email.length >= 28}>{paciente.email}</AppointmentModalText>
 
                     </ContainerMedicalRecord>
 
-                    <ButtonModal onPress={() => navigation.replace("MedicalRecord", { idPaciente: paciente.idPaciente, idade: idade, foto: paciente.foto, consultaId: paciente.consultaId })}>
+                    <ButtonModal disabled={loading} onPress={() => consultaRealizada.situacao === "Agendadas" ? handleRealizadas() :
 
-                        {consultaRealizada.situacao === "Agendadas" ?
-                            <ButtonTitle>Confirmar Consulta</ButtonTitle> :
+                        navigation.replace("MedicalRecord", { idPaciente: paciente.idPaciente, idade: idade, foto: paciente.foto, consultaId: paciente.consultaId })
 
-                            consultaRealizada.situacao === "Realizadas" ?
-                                <ButtonTitle>Inserir Prontuário</ButtonTitle> :
+                    }>
 
-                                <ButtonTitle>Cancelada</ButtonTitle>
+                        {loading ? <ActivityIndicator /> :
+
+                            consultaRealizada.situacao === "Agendadas" ?
+                                <ButtonTitle>Confirmar Consulta</ButtonTitle> :
+
+                                consultaRealizada.situacao === "Realizadas" ?
+                                    <ButtonTitle>Inserir Prontuário</ButtonTitle> :
+
+                                    null
                         }
                     </ButtonModal>
 
@@ -79,6 +121,11 @@ export const AppointmentModal = ({
                     </ButtonSecondary> */}
 
                     <LinkCodeModal onPress={() => setShowModalAppointment(false)}>Cancelar</LinkCodeModal>
+
+
+
+
+
 
 
                 </AppointmentModalContent>
