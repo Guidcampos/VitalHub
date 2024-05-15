@@ -4,7 +4,7 @@ import { Container } from "../../components/Container/ContainerStyle"
 import { Input } from "../../components/Input/Input"
 import { LinkCode } from "../../components/Links/Links"
 import { Logo } from "../../components/Logo/LogoStyle"
-import { ButtonTitle, Subtitle, Title } from "../../components/Title/TitleStyle"
+import { ButtonTitle, Subtitle, SubtitleErro, Title } from "../../components/Title/TitleStyle"
 import api from "../../services/services"
 import { ActivityIndicator, Alert } from "react-native"
 import { handleCallNotifications } from "../../components/Notifications/Notifications"
@@ -33,30 +33,35 @@ export const CreateAccount = ({ navigation }) => {
         setLoading(true)
 
         if (nome === "") {
-            Alert.alert(
-                "Erro", "Favor preencher o campo Nome"
-            )
+            // Alert.alert(
+            //     "Erro", "Favor preencher o campo Nome"
+            // )
+            console.log("NOME VAZIO")
         }
         if (email === "") {
-            Alert.alert(
-                "Erro", "Favor preencher o campo email"
-            )
+            // Alert.alert(
+            //     "Erro", "Favor preencher o campo email"
+            // )
+            console.log("email VAZIO")
 
         }
         else if (senha === "") {
-            Alert.alert(
-                "Erro", "Favor preencher o campo senha"
-            )
+            // Alert.alert(
+            //     "Erro", "Favor preencher o campo senha"
+            // )
+            console.log("senha VAZIO")
+
 
         }
         else if (verificarSenha === "") {
-            Alert.alert(
-                "Erro", "Favor preencher o campo confirmar senha"
-            )
+            // Alert.alert(
+            //     "Erro", "Favor preencher o campo confirmar senha"
+            // )
+            console.log("verificarSenha VAZIO")
 
         }
         else if (verificarSenha === senha) {
-
+            setSenhaVerificada(true)
             setLoading(true)
 
             try {
@@ -96,11 +101,11 @@ export const CreateAccount = ({ navigation }) => {
         }
         else {
             console.log("Senhas não batem")
-            Alert.alert(
-                "Erro", "Senhas não batem"
-            )
+            setSenhaVerificada(false)
             setLoading(false)
         }
+        setLoading(false)
+
     }
 
     return (
@@ -121,6 +126,8 @@ export const CreateAccount = ({ navigation }) => {
                 value={nome}
                 onChangeText={(txt) => setNome(txt)}
             />
+            {nome ? null : <SubtitleErro>Preencha este campo</SubtitleErro>}
+
             <Input
                 placeholder={'Email'}
                 keyboardType={'text'}
@@ -128,6 +135,7 @@ export const CreateAccount = ({ navigation }) => {
                 value={email}
                 onChangeText={(txt) => setEmail(txt)}
             />
+            {email ? null : <SubtitleErro>Preencha este campo</SubtitleErro>}
 
             <Input
                 placeholder={'Senha'}
@@ -137,6 +145,8 @@ export const CreateAccount = ({ navigation }) => {
                 value={senha}
                 onChangeText={(txt) => setSenha(txt)}
             />
+            {senha ? null : <SubtitleErro>Preencha este campo</SubtitleErro>}
+
 
             <Input
                 placeholder={'Confirmar senha'}
@@ -150,6 +160,7 @@ export const CreateAccount = ({ navigation }) => {
                     (txt) => setVerificarSenha(txt)
                 }
             />
+            {senhaVerificada ? null : <SubtitleErro>Senhas diferentes</SubtitleErro>}
 
             <Button>
                 {loading ? <ActivityIndicator />

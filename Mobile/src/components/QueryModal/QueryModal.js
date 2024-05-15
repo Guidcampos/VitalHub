@@ -36,7 +36,7 @@ export const QueryModal = ({
 
                     </ContainerQuery>
 
-                    <ButtonModal onPress={() => navigation.replace("Location", { ClinicaId: medico.clinica })}>
+                    <ButtonModal onPress={() => navigation.navigate("Location", { ClinicaId: medico.clinica })}>
                         <ButtonTitle>Ver local da consulta</ButtonTitle>
                     </ButtonModal>
 

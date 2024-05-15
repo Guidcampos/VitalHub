@@ -17,7 +17,7 @@ export const InputBox = styled.TextInput`
 export const InputCheckEmail = styled(InputBox)`
     width: 65px;
     height: 62px;
-    border: 2px solid #77CACF;
+    border:${props => !props.verificado ? "2px solid red" : "2px solid #49B3BA"};
     text-align: center;
     font-size: 40px;
     padding: 10px;
@@ -37,7 +37,7 @@ color:  ${props => props.editable ? "#34898F" : " #33303E"};
 font-size: 14px;
 font-family: MontserratAlternates_500Medium;
 border-radius: 5px;
-margin-bottom: 20px;
+margin-bottom: ${props => !props.verificado ? "0px" : "20px"};
 `
 
 export const InputBoxMedicalRecord = styled(InputBox)`

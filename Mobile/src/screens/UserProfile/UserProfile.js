@@ -1,14 +1,15 @@
 import { ActivityIndicator, Alert, StatusBar } from "react-native"
 import { BoxInput } from "../../components/BoxInput/BoxInput"
 import { Button, ButtonLogout, ButtonProfile } from "../../components/Button/ButtonStyle"
-import { Container, ContainerInput, ScrollProfile } from "../../components/Container/ContainerStyle"
+import { Container, ContainerInput, ContainerInput1, ScrollProfile } from "../../components/Container/ContainerStyle"
 import { UserImage } from "../../components/Logo/LogoStyle"
-import { ButtonTitle, SubtitleProfile, TitleProfile } from "../../components/Title/TitleStyle"
+import { ButtonTitle, SubtitleErro, SubtitleErro1, SubtitleProfile, TitleProfile } from "../../components/Title/TitleStyle"
 import { useEffect, useState } from "react"
 import { userDecodeToken } from "../../utils/Auth"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import api from "../../services/services"
 import { dateFormatDbToView, formatDate, invertDate } from "../../utils/StringFunction"
+import { handleCallNotifications } from "../../components/Notifications/Notifications"
 
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { ButtonCamera } from "./StyleUserProfile"
@@ -57,7 +58,7 @@ export const UserProfile = ({ navigation }) => {
     //VERIFICAÇOES
     const verificaCep = () => {
         if (usuarioATT.cep.length !== 8) {
-            Alert.alert('Aviso', 'O CEP deve ter exatamente 8 dígitos.')
+            // Alert.alert('Aviso', 'O CEP deve ter exatamente 8 dígitos.')
             setVerificadoCEP(false)
         } else {
             setVerificadoCEP(true)
@@ -65,7 +66,7 @@ export const UserProfile = ({ navigation }) => {
     };
     const verificaCPF = () => {
         if (usuarioATT.cpf.length !== 11) {
-            Alert.alert('Aviso', 'O CPF deve ter exatamente 11 dígitos.')
+            // Alert.alert('Aviso', 'O CPF deve ter exatamente 11 dígitos.')
             setVerificadoCPF(false)
         } else {
             setVerificadoCPF(true)
@@ -73,7 +74,7 @@ export const UserProfile = ({ navigation }) => {
     };
     const verificaCRM = () => {
         if (usuarioATT.crm.length !== 10) {
-            Alert.alert('Aviso', 'O CRM deve ter exatamente 10 dígitos.')
+            // Alert.alert('Aviso', 'O CRM deve ter exatamente 10 dígitos.')
             setVerificadoCRM(false)
         } else {
             setVerificadoCRM(true)
@@ -82,7 +83,7 @@ export const UserProfile = ({ navigation }) => {
     const verificaRG = () => {
 
         if (usuarioATT.rg.length < 9) {
-            Alert.alert('Aviso', 'O RG deve ter mais que 9 dígitos.')
+            // Alert.alert('Aviso', 'O RG deve ter mais que 9 dígitos.')
             setVerificadoRG(false)
         } else {
             setVerificadoRG(true)
@@ -100,7 +101,7 @@ export const UserProfile = ({ navigation }) => {
 
         } else {
             setVerificadoNascimento(false)
-            Alert.alert('Aviso', 'Por favor preencha uma data valida \n DD/MM/YYYY')
+            // Alert.alert('Aviso', 'Por favor preencha uma data valida \n DD/MM/YYYY')
         }
     };
 
@@ -147,7 +148,11 @@ export const UserProfile = ({ navigation }) => {
             if (token.name !== usuarioATT.nome) {
                 try {
                     if (token) {
-                        Alert.alert('Ação necessaria', `Prezado ${usuarioATT.nome}, é necessario relogar para autenticação`)
+                        handleCallNotifications({
+                            title: "Ação necessaria",
+                            body: `Prezado ${usuarioATT.nome}, é necessario relogar para autenticação`
+                        })
+                        // Alert.alert('Ação necessaria', `Prezado ${usuarioATT.nome}, é necessario relogar para autenticação`)
                         AsyncStorage.clear(), navigation.replace("Login")
                         setPrimeiroAcesso(false)
                     }
@@ -374,6 +379,8 @@ export const UserProfile = ({ navigation }) => {
                                     onChangeText={handleNascimento}
                                     maxLength={10}
                                 />
+                                {verificadoNascimento ? null : <SubtitleErro>Por favor preencha uma data valida  DD/MM/YYYY</SubtitleErro>}
+
 
                                 <BoxInput
                                     textLabel='RG'
@@ -390,6 +397,8 @@ export const UserProfile = ({ navigation }) => {
                                     maxLength={10}
 
                                 />
+
+                                {verificadoRG ? null : <SubtitleErro>O RG deve ter mais que 9 dígitos</SubtitleErro>}
 
                             </>
                             : null}
@@ -414,6 +423,10 @@ export const UserProfile = ({ navigation }) => {
                             maxLength={token.role === 'Paciente' ? 11 : 10}
                         />
 
+                        {verificadoCRM ? null : <SubtitleErro>O CRM deve ter exatamente 10 dígitos</SubtitleErro>}
+                        {verificadoCPF ? null : <SubtitleErro>O CPF deve ter exatamente 11 dígitos</SubtitleErro>}
+
+
                         <BoxInput
                             textLabel='Endereço'
                             placeholder='Endereço...'
@@ -433,6 +446,7 @@ export const UserProfile = ({ navigation }) => {
 
                         <ContainerInput>
 
+
                             <BoxInput
                                 textLabel='Cep'
                                 placeholder='00000-000'
@@ -442,11 +456,14 @@ export const UserProfile = ({ navigation }) => {
                                 fieldValue={usuarioATT.cep}
                                 onBlur={verificaCep}
                                 verificado={verificadoCEP}
+                                verificadoCEP={verificadoCEP}
                                 onChangeText={(txt) => {
                                     setUsuarioATT({ ...usuarioATT, cep: txt })
                                 }}
                                 maxLength={8}
                             />
+
+
 
                             <BoxInput
                                 textLabel='Cidade'
@@ -459,6 +476,9 @@ export const UserProfile = ({ navigation }) => {
                             />
 
                         </ContainerInput>
+                        {/* {verificadoCEP ? null : <SubtitleErro1>O CEP deve ter exatamente 8 dígitos</SubtitleErro1>} */}
+
+
                     </>
                 }
 
@@ -467,8 +487,11 @@ export const UserProfile = ({ navigation }) => {
                 <ButtonProfile disabled={loading} onPress={() => editar ?
 
                     verificadoCEP && verificadoCPF && verificadoCRM && verificadoRG ? updateProfile() :
-
-                        Alert.alert("DADOS INCORRETOS", "Preencha corretamente os campos em destaque")
+                        handleCallNotifications({
+                            title: "DADOS INCORRETOS",
+                            body: "Preencha corretamente os campos em destaque!"
+                        })
+                    // Alert.alert("DADOS INCORRETOS", "Preencha corretamente os campos em destaque")
 
                     : setEditar(true)}>
                     {editar ?

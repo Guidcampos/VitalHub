@@ -1,7 +1,7 @@
 import { Container, ConteinerIcon } from "../../components/Container/ContainerStyle"
 import { AntDesign } from '@expo/vector-icons';
 import { Logo } from "../../components/Logo/LogoStyle";
-import { ButtonTitle, Subtitle, Title } from "../../components/Title/TitleStyle";
+import { ButtonTitle, Subtitle, SubtitleErro, Title } from "../../components/Title/TitleStyle";
 import { Input } from "../../components/Input/Input";
 import { Button } from "../../components/Button/ButtonStyle";
 import { useState } from "react";
@@ -12,6 +12,7 @@ export const RedefinePassword = ({ navigation, route }) => {
     const [loading, setLoading] = useState(false)
     const [senha, setSenha] = useState("")
     const [confirmarSenha, setConfirmarSenha] = useState("")
+    const [senhaVerificada, setSenhaVerifcada] = useState(true)
 
     async function AlterarSenha() {
         setLoading(true)
@@ -23,10 +24,12 @@ export const RedefinePassword = ({ navigation, route }) => {
                 }).catch(error => {
                     console.log(error)
                     setLoading(false)
+                    setSenhaVerifcada(true)
                 })
 
         } else {
-            alert("Senhas incompatíveis")
+            // alert("Senhas incompatíveis")
+            setSenhaVerifcada(false)
         }
         setLoading(false)
 
@@ -65,9 +68,12 @@ export const RedefinePassword = ({ navigation, route }) => {
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
+                verificado={senhaVerificada}
+                onBlur={senha === confirmarSenha ? () => setSenhaVerifcada(true) : () => setSenhaVerifcada(false)}
                 value={confirmarSenha}
                 onChangeText={(txt) => setConfirmarSenha(txt)}
             />
+            {senhaVerificada ? null : <SubtitleErro>Senhas não conferem</SubtitleErro>}
 
             <Button disabled={loading} onPress={() => AlterarSenha()}>
                 {loading ? <ActivityIndicator /> : <ButtonTitle>Confirmar nova senha</ButtonTitle>}

@@ -42,6 +42,7 @@ export const ContainerInput = styled.View`
     justify-content: space-between;
 `
 
+
 export const ContainerMedicalRecord = styled.View`
 flex-direction: row;
 justify-content: space-around;

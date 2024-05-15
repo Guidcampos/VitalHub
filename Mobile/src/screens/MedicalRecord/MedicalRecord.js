@@ -9,6 +9,7 @@ import api from "../../services/services"
 import { userDecodeToken } from "../../utils/Auth"
 import { ActivityIndicator } from "react-native"
 import { dateFormatDbToView } from "../../utils/StringFunction"
+import { handleCallNotifications } from "../../components/Notifications/Notifications"
 
 export const MedicalRecord = ({
     navigation,
@@ -63,6 +64,10 @@ export const MedicalRecord = ({
         ).then(response => {
 
             console.log('Prontuário atualizado com sucesso !');
+            handleCallNotifications({
+                title: "Ação concluida",
+                body: "Prontuário atualizado com sucesso !"
+            })
             BuscarProntuario()
             setEditar(false)
             setLoading(false)

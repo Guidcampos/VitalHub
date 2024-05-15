@@ -42,6 +42,21 @@ export const Subtitle = styled.Text`
     margin-bottom: 20px;
     margin-top: 10px;
 `
+//mensagem de erro 
+export const SubtitleErro = styled.Text`
+    width:88%;
+    font-family: Montserrat_700Bold;
+    font-size: 10px;
+    color: red;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    text-align: left;
+`
+export const SubtitleErro1 = styled(SubtitleErro)`
+text-align: center;
+margin-top: 10px;
+
+`
 
 export const SubtitleProfile = styled(Subtitle)`
 margin-bottom: 25px;

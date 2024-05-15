@@ -1,7 +1,7 @@
 import { Input, InputMedicalRecord, InputPrescriptionView, InputProfile, InputViewPrescription, LargeInputModal } from "../Input/Input"
 import { Label, LabelMedicalRecord } from "../Label/Label"
 import { FieldContent, FieldContentMedicalRecord, FotoPrescriptions, InputFoto } from "./BoxInputStyles"
-import { InputLabelModal } from "../Title/TitleStyle"
+import { InputLabelModal, SubtitleErro1 } from "../Title/TitleStyle"
 
 
 export const BoxInput = ({
@@ -14,6 +14,7 @@ export const BoxInput = ({
     keyType = 'default',
     onBlur,
     verificado = true,
+    verificadoCEP = true,
     maxLength
 }) => {
     return (
@@ -22,6 +23,8 @@ export const BoxInput = ({
             <Label textLabel={textLabel} />
 
             <InputProfile verificado={verificado} onBlur={onBlur} editable={editable} placeholder={placeholder} fieldValue={fieldValue} onChangeText={onChangeText} keyType={keyType} maxLength={maxLength} />
+
+            {verificadoCEP ? null : <SubtitleErro1>O CEP deve ter exatamente 8 dígitos</SubtitleErro1>}
 
         </FieldContent>
     )

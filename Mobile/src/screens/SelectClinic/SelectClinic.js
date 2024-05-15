@@ -6,6 +6,7 @@ import { LinkCode } from "../../components/Links/Links";
 import { ListComponent } from "../../components/List/ListStyles";
 import { ButtonTitle, Title, TitleSelect } from "../../components/Title/TitleStyle";
 import api from "../../services/services";
+import { Alert } from "react-native";
 
 export const SelectClinic = ({ navigation, route }) => {
 

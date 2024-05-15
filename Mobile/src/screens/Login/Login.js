@@ -1,6 +1,6 @@
 import { Container, ContentAccount } from "../../components/Container/ContainerStyle"
 import { Logo } from "../../components/Logo/LogoStyle"
-import { ButtonTitle, ButtonTitleGoogle, TextAccount, Title } from "../../components/Title/TitleStyle"
+import { ButtonTitle, ButtonTitleGoogle, SubtitleErro, TextAccount, Title } from "../../components/Title/TitleStyle"
 import { Input } from "../../components/Input/Input"
 import { LinkAccount, LinkMedium } from "../../components/Links/Links"
 import { Button, ButtonGoogle } from "../../components/Button/ButtonStyle"
@@ -19,6 +19,7 @@ export const Login = ({ navigation }) => {
     const [email, setEmail] = useState('gui3@medico.com')
     const [senha, setSenha] = useState('gui123')
     const [loading, setLoading] = useState(false)
+    const [verificaLogin, setVerificaLogin] = useState(true)
 
     async function handleLogin() {
         setLoading(true)
@@ -32,11 +33,13 @@ export const Login = ({ navigation }) => {
             await AsyncStorage.setItem("token", JSON.stringify(response.data))
             const token = await userDecodeToken()
             setLoading(false)
+            setVerificaLogin(true)
             // token.name != '...' ? navigation.navigate("Main") : navigation.navigate("UserProfile")
-            navigation.navigate("Main")
+            navigation.replace("Main")
 
         }).catch(error => {
             console.log(error)
+            setVerificaLogin(false)
             setLoading(false)
         })
 
@@ -56,7 +59,7 @@ export const Login = ({ navigation }) => {
                 placeholder={'E-mail'}
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
-
+                verificado={verificaLogin}
                 value={email}
                 onChangeText={(txt) => setEmail(txt)}
 
@@ -69,12 +72,14 @@ export const Login = ({ navigation }) => {
                 keyboardType={'text'}
                 placeholderTextColor={'#34898F'}
                 secureTextEntry={true}
-
+                verificado={verificaLogin}
                 value={senha}
                 onChangeText={(txt) => setSenha(txt)}
             // value={fieldValue}
             // onChangeText={onChangeText}
             />
+
+            {verificaLogin ? null : <SubtitleErro>Email ou senha invalidos</SubtitleErro>}
 
 
             <LinkMedium onPress={() => navigation.replace("ForgotPassword")}>Esqueceu sua senha?</LinkMedium>

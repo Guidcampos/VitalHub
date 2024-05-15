@@ -100,7 +100,7 @@ export const AppointmentModal = ({
 
                     <ButtonModal disabled={loading} onPress={() => consultaRealizada.situacao === "Agendadas" ? handleRealizadas() :
 
-                        navigation.replace("MedicalRecord", { idPaciente: paciente.idPaciente, idade: idade, foto: paciente.foto, consultaId: paciente.consultaId })
+                        navigation.navigate("MedicalRecord", { idPaciente: paciente.idPaciente, idade: idade, foto: paciente.foto, consultaId: paciente.consultaId })
 
                     }>
 
